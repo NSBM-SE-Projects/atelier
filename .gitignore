@@ -7,7 +7,6 @@ target/
 .mvn/
 mvnw
 mvnw.cmd
-*.iml
 
 # Java Secrets
 backend/src/main/resources/application.properties
@@ -27,8 +26,13 @@ frontend/dist/
 
 # Database
 .env
-db_config.txt
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Project
+CLAUDE.md
+temp
+plan
+resources
