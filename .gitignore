@@ -1,0 +1,34 @@
+# Java/Maven
+target/
+*.class
+*.jar
+*.war
+*.nar
+.mvn/
+mvnw
+mvnw.cmd
+*.iml
+
+# Java Secrets
+backend/src/main/resources/application.properties
+backend/src/main/resources/application-dev.properties
+
+# IntelliJ
+.idea/
+*.iws
+*.icp
+out/
+
+# Node/React
+frontend/node_modules/
+frontend/.env
+frontend/.env.local
+frontend/dist/
+
+# Database
+.env
+db_config.txt
+
+# OS
+.DS_Store
+Thumbs.db
