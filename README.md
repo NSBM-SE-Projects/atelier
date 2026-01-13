@@ -1,16 +1,4 @@
-<p align="center">
-  <img src="https://readme-typing-svg.demolab.com?
-    font=Fira+Code
-    &size=33
-    &pause=800
-    &color=FAF9F6
-    &center=true
-    &vCenter=true
-    &width=800
-    &lines=🛍️+Atelier+-+Online+Shopping+Cart+System;
-    Spring+Boot+%7C+React+%7C+PostgreSQL;
-    PUSL2024+-+Software+Engineering+2" />
-</p>
+# 🛍️ Atelier - Online Shopping Cart System
 
 💻 A full-stack web application demonstrating Object-Oriented Programming principles using **Java**
 
