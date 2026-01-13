@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: atelier-postgres
+    environment:
+      POSTGRES_DB: atelier-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - atelier-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# Usage:
+# Start: docker-compose up -d
+# Stop: docker-compose down
+# View logs: docker-compose logs -f
+# Remove volumes: docker-compose down -v
+#
+# Access:
+# - PostgreSQL: localhost:5432
+#
+# Spring Boot application.properties connection string:
+# spring.datasource.url=jdbc:postgresql://localhost:5432/atelier-db
+# spring.datasource.username=postgres
+# spring.datasource.password=postgres
