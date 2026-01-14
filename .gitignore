@@ -8,10 +8,6 @@ target/
 mvnw
 mvnw.cmd
 
-# Java Secrets
-backend/src/main/resources/application.properties
-backend/src/main/resources/application-dev.properties
-
 # IntelliJ
 .idea/
 *.iws
@@ -35,5 +31,5 @@ Thumbs.db
 CLAUDE.md
 temp
 plan
-resources
 database
+p-assets
