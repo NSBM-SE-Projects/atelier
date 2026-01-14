@@ -27,7 +27,7 @@ const Login = () => {
 
       {/* Content */}
       <div className="relative flex items-center justify-start w-full h-full overflow-hidden">
-        <div className="w-full max-w-md px-12 overflow-hidden md:px-20">
+        <div className="w-full max-w-lg px-12 overflow-hidden md:px-20">
           {/* Heading */}
           <h1 className="mb-4 text-5xl font-bold text-gray-900 md:text-6xl">
             Sign In

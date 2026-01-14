@@ -56,9 +56,9 @@ const Navbar = () => {
               <button className="p-0 text-gray-700 transition-colors bg-transparent border-none hover:text-gray-900">
                 <Phone size={24} strokeWidth={1.5} />
               </button>
-              <button className="p-0 text-gray-700 transition-colors bg-transparent border-none hover:text-gray-900">
+              <Link to="/login" className="p-0 text-gray-700 transition-colors hover:text-gray-900 flex items-center">
                 <User size={24} strokeWidth={1.5} />
-              </button>
+              </Link>
             </div>
           </div>
         </div>
