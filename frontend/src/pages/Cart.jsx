@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useCartStore } from '../store/cartStore';
 import logo from '../assets/atelier-logo-new.png';
 
@@ -38,30 +39,20 @@ const Cart = () => {
           </div>
 
           {/* Scrollable Items */}
-          <div className="flex-1 overflow-y-auto px-12 pb-12">
+          <div className="flex-1 overflow-y-auto px-12 pb-12 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             <div className="space-y-8">
               {items.length === 0 ? (
                 <p className="text-gray-600">Your cart is empty</p>
               ) : (
                 items.map((item) => (
                   <div key={item.id} className="flex items-start gap-6">
-                    {/* Round Checkbox */}
+                    {/* Checkbox */}
                     <div className="flex items-center pt-10">
-                      <button
-                        onClick={() => toggleSelection(item.id)}
-                        className={`w-5 h-5 flex items-center justify-center transition-all ${
-                          item.selected
-                            ? 'bg-black'
-                            : 'bg-white border-2 border-gray-700'
-                        }`}
-                        style={{ borderRadius: '50%', aspectRatio: '1/1' }}
-                      >
-                        {item.selected && (
-                          <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        )}
-                      </button>
+                      <Checkbox
+                        checked={item.selected}
+                        onCheckedChange={() => toggleSelection(item.id)}
+                        className="h-5 w-5 rounded-full border-2 border-gray-400 bg-white data-[state=checked]:bg-white data-[state=checked]:border-gray-400 data-[state=checked]:text-black"
+                      />
                     </div>
 
                     {/* Product Image */}
