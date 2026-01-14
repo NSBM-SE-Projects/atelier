@@ -1,5 +1,6 @@
 import { ShoppingCart, Search, Phone, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/atelier-logo-new.png';
 
 const Navbar = () => {
   const mainLinks = [
@@ -24,7 +25,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 w-full bg-white shadow-sm">
       {/* Top Navigation */}
       <div className="border-b border-gray-200">
-        <div className="w-full px-0 py-4">
+        <div className="relative w-full px-0 py-4">
           <div className="flex items-center justify-between px-4">
             {/* Left - Main Links */}
             <div className="flex items-center gap-8 ml-0">
@@ -38,6 +39,11 @@ const Navbar = () => {
                 </Link>
               ))}
             </div>
+
+            {/* Center - Logo */}
+            <Link to="/" className="absolute transform -translate-x-1/2 left-1/2">
+              <img src={logo} alt="Atelier Logo" className="object-contain w-auto h-12" />
+            </Link>
 
             {/* Right - Icons */}
             <div className="flex gap-12 ml-auto mr-0 items-right">
