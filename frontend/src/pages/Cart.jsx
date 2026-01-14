@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useCartStore } from '../store/cartStore';
@@ -126,7 +127,9 @@ const Cart = () => {
         <div className="w-[420px] bg-gray-100 flex flex-col overflow-hidden">
           {/* Logo */}
           <div className="flex justify-end pt-6 pr-8">
-            <img src={logo} alt="Atelier Logo" className="w-auto h-14" />
+            <Link to="/">
+              <img src={logo} alt="Atelier Logo" className="w-auto h-14" />
+            </Link>
           </div>
 
           {/* Title */}
