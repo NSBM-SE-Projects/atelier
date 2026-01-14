@@ -1,13 +1,18 @@
 import axios from 'axios';
 
+/**
+ * Axios API instance
+ * Base URL: http://localhost:8080/api
+**/
 const api = axios.create({
   baseURL: 'http://localhost:8080/api',
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 10000, 
 });
 
-// Add request interceptor for authentication
+// Request interceptor
 api.interceptors.request.use(
   (config) => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -19,14 +24,19 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Add response interceptor for error handling
+// Response interceptor - handle errors and redirects
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Handle 401 Unauthorized
     if (error.response?.status === 401) {
       localStorage.removeItem('user');
       window.location.href = '/login';
     }
+
+    // Log errors for debugging
+    console.error('API ERROR:', error.response?.status, error.message);
+
     return Promise.reject(error);
   }
 );

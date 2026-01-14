@@ -23,6 +23,7 @@
 ![PostgreSQL 15](https://img.shields.io/badge/PostgreSQL-15-4169E1?style=for-the-badge&labelColor=4169E1&logo=postgresql&logoColor=white)
 ![Neon](https://img.shields.io/badge/Neon-00E5A8?style=for-the-badge&labelColor=00E5A8&logo=neon&logoColor=000000)
 ![DBeaver](https://img.shields.io/badge/DBeaver-372923?style=for-the-badge&labelColor=372923&logo=dbeaver&logoColor=white)
+![Trello](https://img.shields.io/badge/Trello-0052CC?style=for-the-badge&labelColor=0052CC&logo=trello&logoColor=white)
 
 ## ✨ Key Features
 
