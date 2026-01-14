@@ -3,7 +3,7 @@
 💻 A full-stack web application demonstrating Object-Oriented Programming principles using **Java**
 
 <div>
-  <img src="./frontend/src/assets/logo.png" alt="Atelier Logo" height="300"/>
+  <img src="./frontend/src/assets/README.jpeg" alt="Atelier Logo" height="450"/>
 </div>
 
 ## 🧰 Stack
@@ -24,6 +24,7 @@
 ![Neon](https://img.shields.io/badge/Neon-00E5A8?style=for-the-badge&labelColor=00E5A8&logo=neon&logoColor=000000)
 ![DBeaver](https://img.shields.io/badge/DBeaver-372923?style=for-the-badge&labelColor=372923&logo=dbeaver&logoColor=white)
 ![Trello](https://img.shields.io/badge/Trello-0052CC?style=for-the-badge&labelColor=0052CC&logo=trello&logoColor=white)
+![Render](https://img.shields.io/badge/Render-000000?style=for-the-badge&labelColor=000000&logo=render&logoColor=white)
 
 ## ✨ Key Features
 

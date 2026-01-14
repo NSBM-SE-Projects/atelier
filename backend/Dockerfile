@@ -7,6 +7,6 @@ RUN mvn clean package -DskipTests
 
 FROM openjdk:21-slim
 WORKDIR /app
-COPY --from=build /build/target/atelier-1.0.0-RELEASE.jar app.jar
+COPY --from=build /build/target/atelier-1.1.0-RELEASE.jar app.jar
   EXPOSE 8080
   CMD ["java", "-jar", "app.jar"]

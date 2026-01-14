@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.shoppingcart</groupId>
 	<artifactId>atelier</artifactId>
-	<version>1.0.0-RELEASE</version>
+	<version>1.1.0-RELEASE</version>
 	<name>atelier</name>
 	<description>Atelier - Online Shopping Cart System</description>
 	<url/>

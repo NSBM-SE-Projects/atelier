@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { healthCheckService } from '@/lib/healthCheck';
-import viteLogo from '/vite.svg';
-import reactLogo from '../assets/react.svg';
+import reactLogo from '@/assets/react.svg';
+import viteLogo from '@/assets/vite.svg';
+import atelierLogo from '@/assets/atelier-logo.png';
+
 
 export default function Test() {
   const [frontendStatus, setFrontendStatus] = useState('ready');
@@ -168,6 +170,9 @@ export default function Test() {
 
         {/* Logos Section */}
         <div className="flex justify-center gap-7 my-14">
+          <a href="" target="_blank" rel="noopener noreferrer" className="-mt-6 -ml-8 -mr-4">
+            <img src={atelierLogo} className="h-36 hover:opacity-70 transition-opacity" alt="Atelier logo" />
+          </a>
           <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
             <img src={viteLogo} className="h-24 hover:opacity-70 transition-opacity" alt="Vite logo" />
           </a>
