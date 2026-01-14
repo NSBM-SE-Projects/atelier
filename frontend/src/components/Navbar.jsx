@@ -14,11 +14,8 @@ const Navbar = () => {
     { name: 'Men', path: '/category/men' },
     { name: 'Women', path: '/category/women' },
     { name: 'Kids', path: '/category/kids' },
-    { name: 'Gifts', path: '/category/gifts' },
-    { name: 'Bags', path: '/category/bags' },
-    { name: 'Shoes', path: '/category/shoes' },
     { name: 'Accessories', path: '/category/accessories' },
-    { name: 'Other', path: '/category/other' }
+    { name: 'Gifts', path: '/category/gifts' },
   ];
 
   return (
@@ -56,9 +53,9 @@ const Navbar = () => {
               <button className="p-0 text-gray-700 transition-colors bg-transparent border-none hover:text-gray-900">
                 <Phone size={24} strokeWidth={1.5} />
               </button>
-              <button className="p-0 text-gray-700 transition-colors bg-transparent border-none hover:text-gray-900">
+              <Link to="/login" className="p-0 text-gray-700 transition-colors hover:text-gray-900">
                 <User size={24} strokeWidth={1.5} />
-              </button>
+              </Link>
             </div>
           </div>
         </div>
