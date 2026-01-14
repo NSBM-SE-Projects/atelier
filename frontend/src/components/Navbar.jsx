@@ -47,9 +47,9 @@ const Navbar = () => {
 
             {/* Right - Icons */}
             <div className="flex gap-12 ml-auto mr-0 items-right">
-              <button className="p-0 text-gray-700 transition-colors bg-transparent border-none hover:text-gray-900">
+              <Link to="/cart" className="p-0 text-gray-700 transition-colors hover:text-gray-900 flex items-center">
                 <ShoppingCart size={24} strokeWidth={1.5} />
-              </button>
+              </Link>
               <button className="p-0 text-gray-700 transition-colors bg-transparent border-none hover:text-gray-900">
                 <Search size={24} strokeWidth={1.5} />
               </button>

@@ -39,3 +39,22 @@
 .read-the-docs {
   color: #888;
 }
+
+/* White scrollbar for cart left panel */
+.scrollbar-white::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-white::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-white::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+}
+
+.scrollbar-white::-webkit-scrollbar-thumb:hover {
+  background: #f3f4f6;
+}

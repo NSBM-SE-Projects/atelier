@@ -13,6 +13,7 @@
     "test:debug": "playwright test --debug"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.3.3",
     "@radix-ui/react-slot": "^1.2.4",
     "@tanstack/react-query": "^5.90.16",
     "axios": "^1.13.2",
