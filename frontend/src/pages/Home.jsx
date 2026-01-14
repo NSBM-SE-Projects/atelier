@@ -99,7 +99,8 @@ const Home = () => {
           <img
             src={heroImage}
             alt="Lifestyle Edit"
-            className="object-cover object-center w-full h-full"
+            className="object-cover w-full h-full"
+            style={{ objectPosition: 'center 20%' }}
           />
         </div>
 
