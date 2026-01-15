@@ -8,7 +8,7 @@ import './App.css';
 
 function AppContent() {
   const location = useLocation();
-  const hideLayoutRoutes = ['/contact'];
+  const hideLayoutRoutes = [];
   const hideLayout = hideLayoutRoutes.includes(location.pathname);
 
   return (
@@ -31,13 +31,6 @@ function App() {
   return (
     <Router>
       <AppContent />
-      <Navbar />
-      <Routes>
-        {/* Home Page */}
-        <Route path="/" element={<Home />} />
-        {/* Test/Health Check Page */}
-        <Route path="/test" element={<Test />} />
-      </Routes>
     </Router>
   );
 }
