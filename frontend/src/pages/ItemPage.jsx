@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 
@@ -6,59 +6,80 @@ import { ChevronDown } from 'lucide-react';
 import logoBlack from '../../images/logo-black.png';
 
 const ItemPage = () => {
-  const [selectedColor, setSelectedColor] = useState('Brown');
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [relatedItems, setRelatedItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [selectedColor, setSelectedColor] = useState('');
   const [selectedSize, setSelectedSize] = useState('M');
   const [quantity, setQuantity] = useState(1);
 
-  // Product data
-  const product = {
-    name: 'Atelier Brown Mid Dress',
-    price: 14,
-    colors: [
-      { name: 'Red', image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400' },
-      { name: 'Blue', image: 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400' },
-      { name: 'Black', image: 'https://images.unsplash.com/photo-1551803091-e20673f15770?w=400' },
-    ],
-    sizes: ['XS', 'S', 'M', 'L'],
-    mainImage: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800',
+  const sizes = ['XS', 'S', 'M', 'L'];
+
+  useEffect(() => {
+    fetchProduct();
+    fetchRelatedItems();
+  }, [id]);
+
+  const fetchProduct = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`http://localhost:8080/api/products/${id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch product');
+      }
+      const data = await response.json();
+      setProduct(data);
+      setSelectedColor(data.color || '');
+    } catch (err) {
+      setError(err.message);
+      console.error('Error fetching product:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Related items
-  const relatedItems = [
-    {
-      id: 1,
-      name: 'Atelier white crop top',
-      price: 15.0,
-      image: 'https://images.unsplash.com/photo-1562137369-1a1a0bc66744?w=400',
-    },
-    {
-      id: 2,
-      name: 'Atelier Light green basic shirt',
-      price: 20.5,
-      image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400',
-    },
-    {
-      id: 3,
-      name: 'Atelier Elouise bodycorn maxi dress',
-      price: 40.0,
-      image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400',
-    },
-    {
-      id: 4,
-      name: 'Atelier Maisy pink tube top',
-      price: 13.0,
-      image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400',
-    },
-  ];
+  const fetchRelatedItems = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/products');
+      if (response.ok) {
+        const data = await response.json();
+        // Get 4 random products excluding current one
+        const filtered = data.filter(p => p.id !== parseInt(id));
+        const shuffled = filtered.sort(() => 0.5 - Math.random());
+        setRelatedItems(shuffled.slice(0, 4));
+      }
+    } catch (err) {
+      console.error('Error fetching related items:', err);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-gray-600 text-lg">Loading product...</div>
+      </div>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-red-600 text-lg">Error: {error || 'Product not found'}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
       {/* Header with Logo */}
       <div className="p-6 lg:p-8">
-        <div className="flex flex-col items-center w-fit">
+        <Link to="/" className="flex flex-col items-center w-fit">
           <img src={logoBlack} alt="Atelier" className="w-32 h-32 object-contain" />
           <span className="text-base tracking-[0.35em] text-gray-500 font-normal -mt-10">ATELIER</span>
-        </div>
+        </Link>
       </div>
 
       {/* Product Section */}
@@ -69,30 +90,10 @@ const ItemPage = () => {
             {/* Main Image */}
             <div className="w-72 h-96 lg:w-80 lg:h-[450px] bg-gray-100 rounded overflow-hidden">
               <img
-                src={product.mainImage}
+                src={product.imageUrl}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
-            </div>
-
-            {/* Color Thumbnails */}
-            <div className="flex flex-col gap-3">
-              {product.colors.map((color) => (
-                <div
-                  key={color.name}
-                  className="cursor-pointer"
-                  onClick={() => setSelectedColor(color.name)}
-                >
-                  <div className={`w-16 h-20 bg-gray-100 rounded overflow-hidden border-2 ${selectedColor === color.name ? 'border-gray-800' : 'border-transparent'}`}>
-                    <img
-                      src={color.image}
-                      alt={color.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <p className="text-xs text-center mt-1 text-gray-700">{color.name}</p>
-                </div>
-              ))}
             </div>
           </div>
 
@@ -105,7 +106,7 @@ const ItemPage = () => {
 
             {/* Price */}
             <p className="text-2xl lg:text-3xl text-gray-900 mb-6">
-              $ {product.price}
+              $ {product.price.toFixed(2)}
             </p>
 
             {/* Color Selector */}
@@ -120,7 +121,7 @@ const ItemPage = () => {
             <div className="mb-6">
               <label className="text-sm font-medium text-gray-900 mb-3 block">Size</label>
               <div className="flex gap-3">
-                {product.sizes.map((size) => (
+                {sizes.map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
@@ -161,27 +162,29 @@ const ItemPage = () => {
         </div>
 
         {/* Related Items Section */}
-        <div className="mt-20">
-          <h2 className="text-2xl lg:text-3xl font-serif text-center text-gray-900 mb-10">
-            Related Items
-          </h2>
+        {relatedItems.length > 0 && (
+          <div className="mt-20">
+            <h2 className="text-2xl lg:text-3xl font-serif text-center text-gray-900 mb-10">
+              Related Items
+            </h2>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {relatedItems.map((item) => (
-              <Link to={`/item/${item.id}`} key={item.id} className="cursor-pointer group">
-                <div className="aspect-[3/4] bg-gray-100 rounded overflow-hidden mb-3">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <h3 className="text-sm text-gray-900 mb-1">{item.name}</h3>
-                <p className="text-sm text-gray-900">$ {item.price.toFixed(1)}</p>
-              </Link>
-            ))}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              {relatedItems.map((item) => (
+                <Link to={`/item/${item.id}`} key={item.id} className="cursor-pointer group">
+                  <div className="aspect-[3/4] bg-gray-100 rounded overflow-hidden mb-3">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <h3 className="text-sm text-gray-900 mb-1">{item.name}</h3>
+                  <p className="text-sm text-gray-900">$ {item.price.toFixed(2)}</p>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
