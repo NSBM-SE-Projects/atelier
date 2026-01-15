@@ -24,6 +24,7 @@ public class Cart {
     private String sessionId;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<CartItem> items = new ArrayList<>();
 
     @Column(name = "total_price", precision = 10, scale = 2)

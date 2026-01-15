@@ -1,99 +1,121 @@
 import { create } from 'zustand';
+import * as cartService from '../services/cartService';
+import { getSessionId } from '../utils/session';
 
 export const useCartStore = create((set, get) => ({
-  items: [
-    {
-      id: 1,
-      name: "Men's Button-Up Shirt",
-      price: 35.0,
-      image: null,
-      size: 'M',
-      quantity: 1,
-      selected: true
-    },
-    {
-      id: 2,
-      name: 'Black Heels',
-      price: 50.0,
-      image: null,
-      size: '38',
-      quantity: 1,
-      selected: true
-    },
-    {
-      id: 3,
-      name: 'Gold Luxury Watches Classic for Men',
-      price: 40.0,
-      image: null,
-      size: 'One Size',
-      quantity: 1,
-      selected: false
-    },
-    {
-      id: 4,
-      name: "Women's Fashionable Casual Sports White Shoes",
-      price: 35.0,
-      image: null,
-      size: '36',
-      quantity: 1,
-      selected: false
-    },
-    {
-      id: 5,
-      name: "Men's Casual Comfortable Crew Neck Short Sleeve T-Shirt",
-      price: 20.0,
-      image: null,
-      size: 'L',
-      quantity: 1,
-      selected: false
-    },
-    {
-      id: 6,
-      name: 'Rose Off-Shoulder Ruffle Romantic Dresses For Women',
-      price: 45.0,
-      image: null,
-      size: 'M',
-      quantity: 1,
-      selected: false
-    },
-    {
-      id: 7,
-      name: 'Medium Almond Nails',
-      price: 18.0,
-      image: null,
-      size: '10pcs',
-      quantity: 1,
-      selected: false
+  items: [],
+  loading: false,
+  error: null,
+
+  // Set loading state
+  setLoading: (loading) => set({ loading }),
+
+  // Set error state
+  setError: (error) => set({ error }),
+
+  // Fetch cart from backend
+  fetchCart: async () => {
+    set({ loading: true, error: null });
+    try {
+      const sessionId = getSessionId();
+      const cart = await cartService.fetchCart(sessionId);
+
+      // Map backend cart items to frontend format
+      const mappedItems = cart.items.map((item) => ({
+        id: item.productId,
+        name: item.productName,
+        price: Number.parseFloat(item.unitPrice),
+        image: null, // Not provided by backend
+        size: null, // Not stored in backend
+        color: null, // Not stored in backend
+        quantity: item.quantity,
+        selected: true, // Default to selected
+      }));
+
+      set({ items: mappedItems, loading: false });
+    } catch (err) {
+      console.error('Error fetching cart:', err);
+      set({ error: err.message, loading: false });
     }
-  ],
+  },
 
   // Add item to cart
-  addToCart: (item) =>
-    set((state) => {
-      const existingItem = state.items.find((i) => i.id === item.id);
-      if (existingItem) {
-        return {
-          items: state.items.map((i) =>
-            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
-          )
-        };
-      }
-      return { items: [...state.items, { ...item, quantity: 1, selected: true }] };
-    }),
+  addToCart: async (item) => {
+    set({ loading: true, error: null });
+    try {
+      const sessionId = getSessionId();
+      const updatedCart = await cartService.addItemToCart(sessionId, item);
+
+      // Map and update items from response
+      const mappedItems = updatedCart.items.map((cartItem) => ({
+        id: cartItem.productId,
+        name: cartItem.productName,
+        price: Number.parseFloat(cartItem.unitPrice),
+        image: null,
+        size: null,
+        color: null,
+        quantity: cartItem.quantity,
+        selected: true,
+      }));
+
+      set({ items: mappedItems, loading: false });
+    } catch (err) {
+      console.error('Error adding to cart:', err);
+      set({ error: err.message, loading: false });
+    }
+  },
 
   // Remove item from cart
-  removeFromCart: (id) =>
-    set((state) => ({
-      items: state.items.filter((item) => item.id !== id)
-    })),
+  removeFromCart: async (productId) => {
+    set({ loading: true, error: null });
+    try {
+      const sessionId = getSessionId();
+      const updatedCart = await cartService.removeItemFromCart(sessionId, productId);
+
+      // Map and update items from response
+      const mappedItems = updatedCart.items.map((item) => ({
+        id: item.productId,
+        name: item.productName,
+        price: Number.parseFloat(item.unitPrice),
+        image: null,
+        size: null,
+        color: null,
+        quantity: item.quantity,
+        selected: true,
+      }));
+
+      set({ items: mappedItems, loading: false });
+    } catch (err) {
+      console.error('Error removing from cart:', err);
+      set({ error: err.message, loading: false });
+    }
+  },
 
   // Update item quantity
-  updateQuantity: (id, quantity) =>
-    set((state) => ({
-      items: state.items.map((item) =>
-        item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item
-      )
-    })),
+  updateQuantity: async (productId, quantity) => {
+    set({ loading: true, error: null });
+    try {
+      const sessionId = getSessionId();
+      const updatedCart = await cartService.updateCartItemQuantity(sessionId, productId, quantity);
+
+      // Map and update items from response
+      const mappedItems = updatedCart.items.map((item) => ({
+        id: item.productId,
+        name: item.productName,
+        price: Number.parseFloat(item.unitPrice),
+        image: null,
+        size: null,
+        color: null,
+        quantity: item.quantity,
+        selected: true,
+      }));
+
+      set({ items: mappedItems, loading: false });
+    } catch (err) {
+      console.error('Error updating quantity:', err);
+      set({ error: err.message, loading: false });
+    }
+  },
 
   // Toggle item selection
   toggleSelection: (id) =>
@@ -104,7 +126,17 @@ export const useCartStore = create((set, get) => ({
     })),
 
   // Clear cart
-  clearCart: () => set({ items: [] }),
+  clearCart: async () => {
+    set({ loading: true, error: null });
+    try {
+      const sessionId = getSessionId();
+      await cartService.clearCart(sessionId);
+      set({ items: [], loading: false });
+    } catch (err) {
+      console.error('Error clearing cart:', err);
+      set({ error: err.message, loading: false });
+    }
+  },
 
   // Get selected items
   getSelectedItems: () => {

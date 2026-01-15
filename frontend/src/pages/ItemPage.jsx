@@ -59,18 +59,19 @@ const ItemPage = () => {
     }
   };
 
-  const handleAddToCart = () => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.imageUrl,
-      size: selectedSize,
-      quantity: quantity,
-    });
+  const handleAddToCart = async () => {
+    try {
+      await addToCart({
+        id: product.id,
+        quantity: quantity,
+      });
 
-    setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 2000);
+      setAddedToCart(true);
+      setTimeout(() => setAddedToCart(false), 2000);
+    } catch (err) {
+      console.error('Error adding to cart:', err);
+      alert('Failed to add item to cart. Please try again.');
+    }
   };
 
   if (loading) {

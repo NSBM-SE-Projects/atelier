@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useCartStore } from '../store/cartStore';
@@ -6,6 +7,9 @@ import logo from '../assets/atelier-logo-new.png';
 const Cart = () => {
   const {
     items,
+    loading,
+    error,
+    fetchCart,
     removeFromCart,
     updateQuantity,
     toggleSelection,
@@ -15,6 +19,10 @@ const Cart = () => {
     getFinalTotal,
     getSelectedCount
   } = useCartStore();
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
   const selectedItems = getSelectedItems();
   const total = getTotal();
@@ -41,7 +49,15 @@ const Cart = () => {
           {/* Scrollable Items */}
           <div className="flex-1 overflow-y-auto px-12 pb-12 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             <div className="space-y-8">
-              {items.length === 0 ? (
+              {loading && (
+                <p className="text-gray-600 text-lg">Loading cart...</p>
+              )}
+              {error && (
+                <div className="bg-red-50 border border-red-200 p-4 rounded text-red-700">
+                  Error loading cart: {error}
+                </div>
+              )}
+              {!loading && items.length === 0 ? (
                 <p className="text-gray-600">Your cart is empty</p>
               ) : (
                 items.map((item) => (
