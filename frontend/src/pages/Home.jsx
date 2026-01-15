@@ -56,46 +56,46 @@ const Home = () => {
 
       {/* Hero Section */}
       <section className="relative w-full min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-8rem)] flex items-center justify-center bg-gradient-to-b from-red-600 via-red-800 to-red-950">
-        <div className="container px-11 text-center">
+        <div className="container text-center px-11">
           {/* Logo */}
           <div className="flex justify-center mb-3 sm:mb-3">
             <img
               src={atelierLogo}
               alt="Atelier"
-              className="h-48 md:h-60 lg:h-72 w-auto object-contain"
+              className="object-contain w-auto h-48 md:h-60 lg:h-72"
             />
           </div>
 
           {/* Heading */}
-          <h1 className="mb-4 font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-foreground tracking-tight">
+          <h1 className="mb-4 font-serif text-4xl font-bold tracking-tight md:text-6xl lg:text-7xl text-foreground">
             Timeless Elegance,<br />Modern Style
           </h1>
 
           {/* Subheading */}
-          <p className="mb-7 sm:mb-10 font-black text-base md:text-2xl text-red-950 max-w-2xl mx-auto leading-relaxed">
+          <p className="max-w-2xl mx-auto text-base font-black leading-relaxed mb-7 sm:mb-10 md:text-2xl text-red-950">
             Every piece tells a story...
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Button
               variant="thamindu"
-              className="w-64 sm:w-72 h-12 px-8 py-6 text-base text-white bg-black hover:bg-gray-950"
+              className="w-64 h-12 px-8 py-6 text-base text-white bg-black sm:w-72 hover:bg-gray-950"
             >
               Shop Collection
             </Button>
             <Button
               variant="thamindu"
-              className="w-64 sm:w-72 h-12 px-8 py-6 text-base text-black border-2 border-black bg-white hover:bg-black hover:text-white"
+              className="w-64 h-12 px-8 py-6 text-base text-black bg-white border-2 border-black sm:w-72 hover:bg-black hover:text-white"
             >
               Explore New Arrivals
             </Button>
           </div>
 
           {/* Scroll indicator */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+          <div className="absolute -translate-x-1/2 bottom-8 left-1/2">
             <div className="flex flex-col items-center animate-bounce">
-              <span className="text-xs text-gray-950 mb-2">SCROLL</span>
+              <span className="mb-2 text-xs text-gray-950">SCROLL</span>
               <div className="w-px h-12 bg-gradient-to-b from-gray-900 to-transparent"></div>
             </div>
           </div>
@@ -103,13 +103,13 @@ const Home = () => {
       </section>
 
       {/* Featured Products Section with Carousel */}
-      <section className="py-12  sm:py-16 md:py-20">
+      <section className="py-12 sm:py-16 md:py-20">
         <div className="container px-4 mx-auto max-w-7xl">
-          <div className="mb-8 sm:mb-12 text-center -mt-2">
-          <h2 className=" font-serif text-3xl font-bold mb:1 sm:mb-1 text-gray-900  sm:text-4xl md:text-5xl">
+          <div className="mb-8 -mt-2 text-center sm:mb-12">
+          <h2 className="font-serif text-3xl font-bold text-gray-900  mb:1 sm:mb-1 sm:text-4xl md:text-5xl">
             Featured
           </h2>
-            <p className="text-lg font-serif italic"> Browse our collection </p>
+            <p className="font-serif text-lg italic"> Browse our collection </p>
           </div>  
 
           {featuredLoading ? (
@@ -148,10 +148,10 @@ const Home = () => {
                           className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                         />
                       </div>
-                      <h3 className="text-xl font-bold font-serif italic">
+                      <h3 className="font-serif text-xl italic font-bold">
                         {product.pName}
                       </h3>
-                      <p className="mb-3 text-lg font-medium font-serif sm:text-xl italic">
+                      <p className="mb-3 font-serif text-lg italic font-medium sm:text-xl">
                         ${product.pPrice % 1 === 0 ? product.pPrice : product.pPrice.toFixed(2)}
                       </p>
                     </div>
@@ -164,15 +164,15 @@ const Home = () => {
       </section>
 
       {/* Divider */}
-      <div className="container max-w-7xl mx-auto px-32">
+      <div className="container px-32 mx-auto max-w-7xl">
         <div className="border-t-4 border-gray-300"></div>
       </div>
 
       {/* New Arrivals Section - Fetched from Database */}
-      <section className="py-12 sm:py-16 md:py-20 -mt-2">
+      <section className="py-12 -mt-2 sm:py-16 md:py-20">
         <div className="container px-4 mx-auto max-w-7xl">
-          <div className="mb-8 md:mb-16 sm:mb-12 text-center font-serif">
-          <h2 className=" text-3xl font-bold mb-1 text-gray-900  sm:text-4xl md:text-5xl ">
+          <div className="mb-8 font-serif text-center md:mb-16 sm:mb-12">
+          <h2 className="mb-1 text-3xl font-bold text-gray-900  sm:text-4xl md:text-5xl">
               New Arrivals
           </h2>
           <p className="italic"> Check out whats new! </p> 
@@ -200,7 +200,7 @@ const Home = () => {
                       className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
-                  <div className="italic font-serif">
+                  <div className="font-serif italic">
                   <h3 className="mb-2 text-sm font-bold text-gray-900 sm:text-base">
                     {product.pName}
                   </h3>
@@ -217,15 +217,15 @@ const Home = () => {
       </section>
 
        {/* Divider */}
-      <div className="container max-w-7xl mx-auto px-32 mb-8 sm:mb-0">
+      <div className="container px-32 mx-auto mb-8 max-w-7xl sm:mb-0">
         <div className="border-t-4 border-gray-300"></div>
       </div>
 
       {/* Shop by Category Section */}
       <section className="py-12sm:py-16 md:py-20">
         <div className="container px-5 mx-auto max-w-7xl">
-          <div className="mb-8 md:mb-16 sm:mb-12 text-center font-serif">
-          <h2 className=" text-3xl font-bold mb-1 text-gray-900  sm:text-4xl md:text-5xl ">
+          <div className="mb-8 font-serif text-center md:mb-16 sm:mb-12">
+          <h2 className="mb-1 text-3xl font-bold text-gray-900  sm:text-4xl md:text-5xl">
               Shop By Category
           </h2>
           </div>
@@ -234,7 +234,7 @@ const Home = () => {
             {categories.map((category) => (
               <div
                 key={category.id}
-                className="relative overflow-hidden cursor-pointer h-64 sm:h-80 md:h-96 group"
+                className="relative h-64 overflow-hidden cursor-pointer sm:h-80 md:h-96 group"
               >
                 <img
                   src={category.image}
@@ -253,7 +253,7 @@ const Home = () => {
                   <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 lg:bottom-12 lg:right-12">
                     <Button
                       variant="thamindu"
-                      className="p-3 sm:p-4 text-black bg-white hover:bg-gray-100 hover:scale-110 rounded-full"
+                      className="p-3 text-black bg-white rounded-full sm:p-4 hover:bg-gray-100 hover:scale-110"
                     >
                       <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2.5} />
                     </Button>
@@ -265,17 +265,17 @@ const Home = () => {
         </div>
       </section>
 
-      <div className="container max-w-7xl mx-auto px-32 mb-8 sm:mb-0 sm:mt-0 mt-14 ">
-        <div className=" border-t-4 border-gray-300"></div>
+      <div className="container px-32 mx-auto mb-8 max-w-7xl sm:mb-0 sm:mt-0 mt-14 ">
+        <div className="border-t-4 border-gray-300 "></div>
       </div>
 
       {/* Follow Us On Section */}
-      <section className="py-16 sm:py-20 md:py-24 -mt-10 sm:-mt-4">
+      <section className="py-16 -mt-10 sm:py-20 md:py-24 sm:-mt-4">
         <div className="container max-w-4xl px-4 mx-auto text-center">
           <h2 className="mb-1 font-serif text-3xl font-bold text-gray-900 sm:mb-4 sm:text-4xl md:text-5xl">
             Follow Us On
           </h2>
-          <p className=" text-base text-gray-700 sm:text-lg italic font-serif">
+          <p className="font-serif text-base italic text-gray-700  sm:text-lg">
             Join to see where we get our inspiration!
           </p>
 
