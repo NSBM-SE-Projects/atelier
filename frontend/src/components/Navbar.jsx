@@ -13,7 +13,7 @@ const Navbar = () => {
     { name: 'Men', path: '/category/men' },
     { name: 'Women', path: '/category/women' },
     { name: 'Kids', path: '/category/kids' },
-    { name: 'Gifts', path: '/category/gifts' },
+    { name: 'Gifts', path: '/gift-voucher' },
     { name: 'Bags', path: '/category/bags' },
     { name: 'Shoes', path: '/category/shoes' },
     { name: 'Accessories', path: '/category/accessories' },
