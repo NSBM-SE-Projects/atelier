@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Test from './pages/Test';
 import './App.css';
@@ -31,6 +31,13 @@ function App() {
   return (
     <Router>
       <AppContent />
+      <Navbar />
+      <Routes>
+        {/* Home Page */}
+        <Route path="/" element={<Home />} />
+        {/* Test/Health Check Page */}
+        <Route path="/test" element={<Test />} />
+      </Routes>
     </Router>
   );
 }
