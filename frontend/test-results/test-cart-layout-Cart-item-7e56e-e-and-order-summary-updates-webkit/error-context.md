@@ -1,0 +1,133 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - heading "Your Cart" [level=1] [ref=e7]
+    - generic [ref=e9]:
+      - generic [ref=e10]:
+        - checkbox [checked] [ref=e12] [cursor=pointer]:
+          - generic:
+            - img
+        - generic [ref=e14]: No Image
+        - generic [ref=e15]:
+          - heading "Men's Button-Up Shirt" [level=3] [ref=e16]
+          - paragraph [ref=e17]: "Size: M"
+          - paragraph [ref=e18]: $35.00
+          - button "Remove" [ref=e19] [cursor=pointer]
+        - generic [ref=e21]:
+          - button "−" [ref=e22] [cursor=pointer]
+          - spinbutton [ref=e23]: "1"
+          - button "+" [ref=e24] [cursor=pointer]
+      - generic [ref=e25]:
+        - checkbox [checked] [ref=e27] [cursor=pointer]:
+          - generic:
+            - img
+        - generic [ref=e29]: No Image
+        - generic [ref=e30]:
+          - heading "Black Heels" [level=3] [ref=e31]
+          - paragraph [ref=e32]: "Size: 38"
+          - paragraph [ref=e33]: $50.00
+          - button "Remove" [ref=e34] [cursor=pointer]
+        - generic [ref=e36]:
+          - button "−" [ref=e37] [cursor=pointer]
+          - spinbutton [ref=e38]: "1"
+          - button "+" [ref=e39] [cursor=pointer]
+      - generic [ref=e40]:
+        - checkbox [ref=e42] [cursor=pointer]
+        - generic [ref=e44]: No Image
+        - generic [ref=e45]:
+          - heading "Gold Luxury Watches Classic for Men" [level=3] [ref=e46]
+          - paragraph [ref=e47]: "Size: One Size"
+          - paragraph [ref=e48]: $40.00
+          - button "Remove" [ref=e49] [cursor=pointer]
+        - generic [ref=e51]:
+          - button "−" [ref=e52] [cursor=pointer]
+          - spinbutton [ref=e53]: "1"
+          - button "+" [ref=e54] [cursor=pointer]
+      - generic [ref=e55]:
+        - checkbox [ref=e57] [cursor=pointer]
+        - generic [ref=e59]: No Image
+        - generic [ref=e60]:
+          - heading "Women's Fashionable Casual Sports White Shoes" [level=3] [ref=e61]
+          - paragraph [ref=e62]: "Size: 36"
+          - paragraph [ref=e63]: $35.00
+          - button "Remove" [ref=e64] [cursor=pointer]
+        - generic [ref=e66]:
+          - button "−" [ref=e67] [cursor=pointer]
+          - spinbutton [ref=e68]: "1"
+          - button "+" [ref=e69] [cursor=pointer]
+      - generic [ref=e70]:
+        - checkbox [ref=e72] [cursor=pointer]
+        - generic [ref=e74]: No Image
+        - generic [ref=e75]:
+          - heading "Men's Casual Comfortable Crew Neck Short Sleeve T-Shirt" [level=3] [ref=e76]
+          - paragraph [ref=e77]: "Size: L"
+          - paragraph [ref=e78]: $20.00
+          - button "Remove" [ref=e79] [cursor=pointer]
+        - generic [ref=e81]:
+          - button "−" [ref=e82] [cursor=pointer]
+          - spinbutton [ref=e83]: "1"
+          - button "+" [ref=e84] [cursor=pointer]
+      - generic [ref=e85]:
+        - checkbox [ref=e87] [cursor=pointer]
+        - generic [ref=e89]: No Image
+        - generic [ref=e90]:
+          - heading "Rose Off-Shoulder Ruffle Romantic Dresses For Women" [level=3] [ref=e91]
+          - paragraph [ref=e92]: "Size: M"
+          - paragraph [ref=e93]: $45.00
+          - button "Remove" [ref=e94] [cursor=pointer]
+        - generic [ref=e96]:
+          - button "−" [ref=e97] [cursor=pointer]
+          - spinbutton [ref=e98]: "1"
+          - button "+" [ref=e99] [cursor=pointer]
+      - generic [ref=e100]:
+        - checkbox [ref=e102] [cursor=pointer]
+        - generic [ref=e104]: No Image
+        - generic [ref=e105]:
+          - heading "Medium Almond Nails" [level=3] [ref=e106]
+          - paragraph [ref=e107]: "Size: 10pcs"
+          - paragraph [ref=e108]: $18.00
+          - button "Remove" [ref=e109] [cursor=pointer]
+        - generic [ref=e111]:
+          - button "−" [ref=e112] [cursor=pointer]
+          - spinbutton [ref=e113]: "1"
+          - button "+" [ref=e114] [cursor=pointer]
+  - generic [ref=e115]:
+    - img "Atelier Logo" [ref=e117]
+    - heading "Order Summary" [level=2] [ref=e119]
+    - generic [ref=e121]:
+      - generic [ref=e122]:
+        - generic [ref=e123]:
+          - generic [ref=e125]: No Image
+          - generic [ref=e126]:
+            - heading "Men's Button-Up Shirt" [level=3] [ref=e127]
+            - paragraph [ref=e128]: "Size: M"
+            - paragraph [ref=e129]: $35.00
+          - generic [ref=e131]:
+            - button "−" [ref=e132] [cursor=pointer]
+            - spinbutton [ref=e133]: "1"
+            - button "+" [ref=e134] [cursor=pointer]
+        - generic [ref=e135]:
+          - generic [ref=e137]: No Image
+          - generic [ref=e138]:
+            - heading "Black Heels" [level=3] [ref=e139]
+            - paragraph [ref=e140]: "Size: 38"
+            - paragraph [ref=e141]: $50.00
+          - generic [ref=e143]:
+            - button "−" [ref=e144] [cursor=pointer]
+            - spinbutton [ref=e145]: "1"
+            - button "+" [ref=e146] [cursor=pointer]
+      - generic [ref=e147]:
+        - generic [ref=e148]:
+          - generic [ref=e149]: "Item total:"
+          - generic [ref=e150]: $85.00
+        - generic [ref=e151]:
+          - generic [ref=e152]: "Item discount:"
+          - generic [ref=e153]: "-$8.50"
+        - generic [ref=e154]:
+          - generic [ref=e155]: Total
+          - generic [ref=e156]: $76.50
+      - paragraph [ref=e157]: Please refer to your final actual payment amount.
+    - button "Checkout (2)" [ref=e160] [cursor=pointer]
+```
