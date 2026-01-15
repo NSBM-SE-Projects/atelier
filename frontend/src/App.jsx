@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 import Cart from './pages/Cart';
 import Test from './pages/Test';
 import GiftVoucher from './pages/GiftVoucher';
@@ -13,7 +14,7 @@ import './App.css';
 
 function AppContent() {
   const location = useLocation();
-  const hideLayoutRoutes = ['/contact', '/gift-voucher', '/login', '/cart'];
+  const hideLayoutRoutes = ['/contact', '/gift-voucher', '/login', '/signup', '/cart'];
   const hideLayout = hideLayoutRoutes.includes(location.pathname) || location.pathname.startsWith('/item');
 
   return (
@@ -36,6 +37,8 @@ function AppContent() {
         <Route path="/cart" element={<Cart />} />
         {/* Login Page */}
         <Route path="/login" element={<Login />} />
+        {/* Sign Up Page */}
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
       {!hideLayout && <Footer />}
     </>

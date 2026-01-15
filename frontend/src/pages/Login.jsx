@@ -41,7 +41,7 @@ const Login = () => {
             onClick={handleContinueWithShop}
             className="w-full bg-[#8B4555] hover:bg-[#6B3545] text-white text-lg py-6 rounded-2xl mb-8 font-semibold"
           >
-            Continue with shop
+            Continue shoping
           </Button>
 
           {/* Divider */}
