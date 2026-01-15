@@ -4,65 +4,90 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '@/lib/api';
 import useAuthStore from '@/store/authStore';
 
-const Login = () => {
+const Signup = () => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [backgroundPos, setBackgroundPos] = useState('60% 100px');
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
-        setBackgroundPos('center 50px'); // Mobile
+        setBackgroundPos('center 50px');
       } else if (window.innerWidth < 1368) {
-        setBackgroundPos('center 50px'); // Desktop
-      }
-      else {
-        setBackgroundPos('100px 100px'); // Desktop
+        setBackgroundPos('center 50px');
+      } else {
+        setBackgroundPos('100px 100px');
       }
     };
 
-    // Set initial position
     handleResize();
-
-    // Listen for window resize
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleContinueWithShop = () => {
-    // Handle continue with shop logic
-    navigate('/shop');
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    if (confirmPassword && newPassword !== confirmPassword) {
+      setPasswordError('Passwords do not match');
+    } else {
+      setPasswordError('');
+    }
   };
 
-  const handleContinue = async (e) => {
+  const handleConfirmPasswordChange = (e) => {
+    const newConfirmPassword = e.target.value;
+    setConfirmPassword(newConfirmPassword);
+
+    if (password && password !== newConfirmPassword) {
+      setPasswordError('Passwords do not match');
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  const handleSignup = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (password !== confirmPassword) {
+      setPasswordError('Passwords do not match');
+      return;
+    }
+
+    if (!username.trim() || !email.trim() || !password.trim()) {
+      setError('All fields are required');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const response = await api.post('/auth/login', {
+      const response = await api.post('/auth/register', {
         username,
+        email,
         password,
+        confirmPassword,
       });
 
       // Store user data in localStorage
       localStorage.setItem('user', JSON.stringify(response.data));
 
-      // Update auth store
+      // Update auth store (auto-login)
       useAuthStore.getState().login(response.data);
 
-      // Redirect based on user type
-      if (response.data.userType === 'STAFF') {
-        navigate('/admin');
-      } else {
-        navigate('/');
-      }
+      // Redirect to home
+      navigate('/');
     } catch (err) {
       // Extract error message from response (check multiple possible locations)
-      let errorMessage = 'Login failed. Please check your credentials.';
+      let errorMessage = 'Registration failed. Please try again.';
 
       if (err.response?.data?.message) {
         errorMessage = err.response.data.message;
@@ -72,8 +97,8 @@ const Login = () => {
         errorMessage = err.response.statusText;
       }
 
-      console.error('Login error:', err);
       setError(errorMessage);
+      console.error('Signup error:', err);
     } finally {
       setIsLoading(false);
     }
@@ -89,26 +114,11 @@ const Login = () => {
         <div className="w-full max-w-lg px-12 md:px-20">
           {/* Heading */}
           <h1 className="mb-4 text-5xl font-black italic font-serif text-gray-900 md:text-6xl">
-            Sign In
+            Sign Up
           </h1>
           <p className="mb-12 text-xl text-gray-700 font-serif italic">
-            Sign in or create an account
+            Create a new account to get started
           </p>
-
-          {/* Continue with Shop Button */}
-          <Button
-            onClick={handleContinueWithShop}
-            className="w-full bg-red-800 hover:bg-red-900 text-white text-lg py-6 rounded-3xl mb-8 font-semibold hover:border-transparent"
-          >
-            Continue Shopping
-          </Button>
-
-          {/* Divider */}
-          <div className="flex items-center gap-4 mb-8">
-            <div className="flex-1 h-px bg-gray-400"></div>
-            <span className="font-medium text-gray-600 font-serif italic">or</span>
-            <div className="flex-1 h-px bg-gray-400"></div>
-          </div>
 
           {/* Error Message */}
           {error && (
@@ -117,8 +127,8 @@ const Login = () => {
             </div>
           )}
 
-          {/* Login Form */}
-          <form onSubmit={handleContinue} className="w-full space-y-4">
+          {/* Signup Form */}
+          <form onSubmit={handleSignup} className="w-full space-y-4">
             {/* Username Input */}
             <div>
               <input
@@ -131,34 +141,69 @@ const Login = () => {
               />
             </div>
 
+            {/* Email Input */}
+            <div>
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-6 py-4 text-base placeholder-gray-600 placeholder:font-serif transition-colors bg-gray-200 border-2 border-gray-300 rounded-3xl focus:outline-none focus:border-gray-600"
+              />
+            </div>
+
             {/* Password Input */}
             <div>
               <input
                 type="password"
                 placeholder="Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange}
                 required
                 className="w-full px-6 py-4 text-base placeholder-gray-600 placeholder:font-serif transition-colors bg-gray-200 border-2 border-gray-300 rounded-3xl focus:outline-none focus:border-gray-600"
               />
             </div>
 
-            {/* Continue Button */}
+            {/* Confirm Password Input */}
+            <div>
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                required
+                className={`w-full px-6 py-4 text-base placeholder-gray-600 placeholder:font-serif transition-colors bg-gray-200 border-2 rounded-3xl focus:outline-none ${
+                  passwordError
+                    ? 'border-red-400 focus:border-red-600'
+                    : 'border-gray-300 focus:border-gray-600'
+                }`}
+              />
+            </div>
+
+            {/* Password Error */}
+            {passwordError && (
+              <div className="p-2 text-sm text-red-700 bg-red-50 rounded">
+                {passwordError}
+              </div>
+            )}
+
+            {/* Sign Up Button */}
             <Button
               type="submit"
-              disabled={isLoading}
-              className="w-full py-6 text-lg font-semibold text-white bg-gray-950 rounded-3xl hover:bg-gray-900 disabled:opacity-50 hover:border-transparent"
+              disabled={isLoading || passwordError}
+              className="w-full py-6 text-lg font-semibold text-white bg-gray-950 rounded-3xl hover:bg-gray-900 disabled:opacity-50"
             >
-              {isLoading ? 'Signing In...' : 'Sign In'}
+              {isLoading ? 'Creating Account...' : 'Sign Up'}
             </Button>
           </form>
 
           {/* Footer Links */}
           <div className="mt-9 text-sm text-center text-gray-600 font-serif">
             <p>
-              Don't have an account?{' '}
-              <Link to="/signup" className="font-semibold text-gray-900 hover:underline itali hover:text-gray-700 italic">
-                Create one!
+              Already have an account?{' '}
+              <Link to="/login" className="font-semibold text-gray-900 hover:underline italic hover:text-gray-700">
+                Sign in instead
               </Link>
             </p>
           </div>
@@ -168,4 +213,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

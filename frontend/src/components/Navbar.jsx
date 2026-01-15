@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { ShoppingCart, Search, User, Menu, ChevronRight } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { ShoppingCart, User, Menu, ChevronRight, LogOut } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
 import { Badge } from './ui/badge';
 import useAuthStore from '@/store/authStore';
@@ -9,8 +9,15 @@ import logo from '../assets/atelier-logo.png';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const cartItemCount = 0; // TODO: Replace with actual cart count from state management
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    useAuthStore.getState().logout();
+    navigate('/login');
+  };
 
   const mainLinks = [
     { name: 'HOME', path: '/' },
@@ -146,17 +153,40 @@ const Navbar = () => {
                 </Link>
               )}
 
-              <Link
-                to="/login"
-                className={`p-2 transition-all duration-200 hover:scale-110 ${
-                  isActive('/login')
-                    ? 'text-gray-900'
-                    : 'text-gray-100 hover:text-gray-950'
-                }`}
-                aria-label="User Account"
-              >
-                <User size={22} strokeWidth={3} />
-              </Link>
+              {isLoggedIn ? (
+                <div className="flex items-center gap-2">
+                  <Link
+                    to="/profile"
+                    className={`p-2 transition-all duration-200 hover:scale-110 ${
+                      isActive('/profile')
+                        ? 'text-gray-900'
+                        : 'text-gray-100 hover:text-gray-950'
+                    }`}
+                    aria-label="User Profile"
+                  >
+                    <User size={22} strokeWidth={3} />
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="p-2 transition-all duration-200 hover:scale-110 text-gray-100 hover:text-gray-950 bg-transparent hover:border-transparent"
+                    aria-label="Logout"
+                  >
+                    <LogOut size={22} strokeWidth={3} />
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  className={`p-2 transition-all duration-200 hover:scale-110 ${
+                    isActive('/login')
+                      ? 'text-gray-900'
+                      : 'text-gray-100 hover:text-gray-950'
+                  }`}
+                  aria-label="User Account"
+                >
+                  <User size={22} strokeWidth={3} />
+                </Link>
+              )}
             </div>
           </div>
         </div>
