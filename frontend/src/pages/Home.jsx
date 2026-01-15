@@ -164,7 +164,7 @@ const Home = () => {
       </section>
 
       {/* Divider */}
-      <div className="container max-w-7xl px-32">
+      <div className="container max-w-7xl mx-auto px-32">
         <div className="border-t-4 border-gray-300"></div>
       </div>
 
@@ -217,7 +217,7 @@ const Home = () => {
       </section>
 
        {/* Divider */}
-      <div className="container max-w-7xl px-32 mb-8 sm:mb-0">
+      <div className="container max-w-7xl mx-auto px-32 mb-8 sm:mb-0">
         <div className="border-t-4 border-gray-300"></div>
       </div>
 
@@ -265,8 +265,8 @@ const Home = () => {
         </div>
       </section>
 
-      <div className="container max-w-7xl px-32 mb-8 sm:mb-0 sm:mt-0 mt-14">
-        <div className="border-t-4 border-gray-300"></div>
+      <div className="container max-w-7xl mx-auto px-32 mb-8 sm:mb-0 sm:mt-0 mt-14 ">
+        <div className=" border-t-4 border-gray-300"></div>
       </div>
 
       {/* Follow Us On Section */}
