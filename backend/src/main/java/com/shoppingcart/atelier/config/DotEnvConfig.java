@@ -13,7 +13,7 @@ public class DotEnvConfig {
     }
 
     private static void loadEnvFile() {
-        String[] paths = {".env", "../.env"};
+        String[] paths = {".env", "./.env"};
 
         for (String path : paths) {
             File envFile = new File(path);
@@ -32,14 +32,14 @@ public class DotEnvConfig {
                             }
                         }
                     }
-                    System.out.println("✓ Loaded ..env from: " + envFile.getAbsolutePath());
+                    System.out.println("✓ Loaded .env from: " + envFile.getAbsolutePath());
                     return;
                 } catch (IOException e) {
                     System.err.println("Failed to load ..env: " + e.getMessage());
                 }
             }
         }
-        System.out.println("No ..env file found, using environment variables or defaults");
+        System.out.println("No .env file found, using environment variables or defaults");
     }
 }
 
