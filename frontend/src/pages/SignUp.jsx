@@ -24,12 +24,54 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
     setIsLoading(true);
-    // Handle signup logic
-    console.log('Sign up with:', formData);
-    setTimeout(() => setIsLoading(false), 1000);
+    try {
+      const response = await fetch('http://localhost:8080/api/users/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          confirmPassword: formData.confirmPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        alert('Account created successfully! Please log in.');
+        // Reset form
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+        });
+        // Redirect to login page (you can use navigate from react-router)
+        window.location.href = '/login';
+      } else {
+        alert(data.message || 'Failed to create account');
+      }
+    } catch (error) {
+      console.error('Error signing up:', error);
+      alert('Error creating account. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
