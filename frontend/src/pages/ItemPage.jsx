@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
+import { useCartStore } from '../store/cartStore';
 
 // Import logo
 import logoBlack from '../../images/logo-black.png';
@@ -11,12 +12,14 @@ const ItemPage = () => {
   const [relatedItems, setRelatedItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedSize, setSelectedSize] = useState('M');
   const [quantity, setQuantity] = useState(1);
 
   const sizes = ['XS', 'S', 'M', 'L'];
+  const addToCart = useCartStore((state) => state.addToCart);
 
   useEffect(() => {
     fetchProduct();
@@ -56,6 +59,20 @@ const ItemPage = () => {
     }
   };
 
+  const handleAddToCart = () => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.imageUrl,
+      size: selectedSize,
+      quantity: quantity,
+    });
+
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 2000);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
@@ -84,11 +101,10 @@ const ItemPage = () => {
 
       {/* Product Section */}
       <div className="max-w-6xl mx-auto px-6 lg:px-8 pb-16">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
-          {/* Left - Images */}
-          <div className="flex gap-4">
-            {/* Main Image */}
-            <div className="w-72 h-96 lg:w-80 lg:h-[450px] bg-gray-100 rounded overflow-hidden">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
+          {/* Left - Main Image */}
+          <div className="flex-shrink-0">
+            <div className="w-64 h-96 md:w-72 md:h-[450px] lg:w-80 lg:h-[500px] bg-gray-100 rounded overflow-hidden">
               <img
                 src={product.imageUrl}
                 alt={product.name}
@@ -98,37 +114,36 @@ const ItemPage = () => {
           </div>
 
           {/* Right - Product Details */}
-          <div className="flex-1 pt-4">
+          <div className="flex-1 lg:pt-0">
             {/* Product Name */}
-            <h1 className="text-2xl lg:text-3xl font-serif italic text-gray-900 mb-4">
+            <h1 className="text-3xl lg:text-4xl font-serif text-gray-900 mb-6 leading-tight">
               {product.name}
             </h1>
 
             {/* Price */}
-            <p className="text-2xl lg:text-3xl text-gray-900 mb-6">
+            <p className="text-3xl lg:text-4xl text-gray-900 mb-8 font-light">
               $ {product.price.toFixed(2)}
             </p>
 
-            {/* Color Selector */}
-            <div className="mb-6">
-              <label className="text-sm font-medium text-gray-900 mb-2 block">
+            {/* Color Display */}
+            <div className="mb-8">
+              <p className="text-sm text-gray-700">
                 Color: <span className="font-normal">{selectedColor}</span>
-                <ChevronDown className="inline-block w-4 h-4 ml-1" />
-              </label>
+              </p>
             </div>
 
             {/* Size Selector */}
-            <div className="mb-6">
-              <label className="text-sm font-medium text-gray-900 mb-3 block">Size</label>
-              <div className="flex gap-3">
+            <div className="mb-8">
+              <label className="text-sm font-medium text-gray-900 mb-4 block">Size</label>
+              <div className="flex gap-4">
                 {sizes.map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`w-12 h-10 rounded-full border text-sm font-medium transition-colors bg-white ${
+                    className={`w-14 h-11 rounded-full border-2 text-sm font-medium transition-all ${
                       selectedSize === size
-                        ? 'border-gray-900 text-gray-900'
-                        : 'border-gray-300 text-gray-700 hover:border-gray-500'
+                        ? 'border-gray-900 text-gray-900 bg-white'
+                        : 'border-gray-300 text-gray-700 hover:border-gray-500 bg-white'
                     }`}
                   >
                     {size}
@@ -138,25 +153,28 @@ const ItemPage = () => {
             </div>
 
             {/* Quantity */}
-            <div className="mb-8">
-              <label className="text-sm font-medium text-gray-900 mb-2 block">Qty</label>
-              <div className="relative w-20">
+            <div className="mb-10">
+              <label className="text-sm font-medium text-gray-900 mb-3 block">Qty</label>
+              <div className="relative w-24">
                 <select
                   value={quantity}
                   onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="w-full h-10 px-3 border border-gray-300 rounded appearance-none bg-white text-gray-700 focus:outline-none focus:border-gray-500"
+                  className="w-full h-11 px-4 border border-gray-300 rounded appearance-none bg-white text-gray-700 focus:outline-none focus:border-gray-900"
                 >
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                     <option key={num} value={num}>{num}</option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
               </div>
             </div>
 
             {/* Add to Cart Button */}
-            <button className="w-full max-w-md py-4 bg-[#722F37] text-white rounded-full text-lg font-medium hover:bg-[#5a252c] transition-colors">
-              Add To Cart
+            <button
+              onClick={handleAddToCart}
+              className="w-full max-w-md py-4 bg-[#722F37] text-white rounded-full text-lg font-medium hover:bg-[#5a252c] transition-colors"
+            >
+              {addedToCart ? '✓ Added to Cart!' : 'Add To Cart'}
             </button>
           </div>
         </div>
