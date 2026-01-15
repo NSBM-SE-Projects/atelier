@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 
 // Import logo
@@ -167,7 +168,7 @@ const ItemPage = () => {
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedItems.map((item) => (
-              <div key={item.id} className="cursor-pointer group">
+              <Link to={`/item/${item.id}`} key={item.id} className="cursor-pointer group">
                 <div className="aspect-[3/4] bg-gray-100 rounded overflow-hidden mb-3">
                   <img
                     src={item.image}
@@ -177,7 +178,7 @@ const ItemPage = () => {
                 </div>
                 <h3 className="text-sm text-gray-900 mb-1">{item.name}</h3>
                 <p className="text-sm text-gray-900">$ {item.price.toFixed(1)}</p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
