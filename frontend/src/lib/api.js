@@ -34,8 +34,10 @@ api.interceptors.response.use(
       window.location.href = '/login';
     }
 
-    // Log errors for debugging
-    console.error('API ERROR:', error.response?.status, error.message);
+    // Log errors for debugging (only in development)
+    if (import.meta.env.DEV) {
+      console.error('API ERROR:', error.response?.status, error.message);
+    }
 
     return Promise.reject(error);
   }
