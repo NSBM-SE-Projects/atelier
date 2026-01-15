@@ -55,7 +55,7 @@ const Home = () => {
     <div className="w-full">
 
       {/* Hero Section */}
-      <section className="relative w-full min-h-[100vh] flex items-center justify-center bg-gradient-to-br from-red-600 via-red-800 to-red-950">
+      <section className="relative w-full min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-8rem)] flex items-center justify-center bg-gradient-to-b from-red-600 via-red-800 to-red-950">
         <div className="container px-11 text-center">
           {/* Logo */}
           <div className="flex justify-center mb-3 sm:mb-3">
