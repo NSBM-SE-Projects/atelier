@@ -18,9 +18,9 @@ const GiftVoucher = () => {
   const giftVouchers = [
     {
       id: 1,
-      name: 'ATELIER GIFT VOUCHER -$ 20.0',
-      price: 20.0,
-      displayPrice: '$ 20'
+      name: 'ATELIER GIFT VOUCHER -$ 100.0',
+      price: 100.0,
+      displayPrice: '$ 100'
     },
     {
       id: 2,

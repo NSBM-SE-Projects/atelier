@@ -5,11 +5,12 @@ import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Test from './pages/Test';
 import GiftVoucher from './pages/GiftVoucher';
+import ItemPage from './pages/ItemPage';
 import './App.css';
 
 function AppContent() {
   const location = useLocation();
-  const hideLayoutRoutes = ['/contact', '/gift-voucher'];
+  const hideLayoutRoutes = ['/contact', '/gift-voucher', '/item'];
   const hideLayout = hideLayoutRoutes.includes(location.pathname);
 
   return (
@@ -24,6 +25,8 @@ function AppContent() {
         <Route path="/test" element={<Test />} />
         {/* Gift Voucher Page */}
         <Route path="/gift-voucher" element={<GiftVoucher />} />
+        {/* Item Page */}
+        <Route path="/item" element={<ItemPage />} />
       </Routes>
       {!hideLayout && <Footer />}
     </>
