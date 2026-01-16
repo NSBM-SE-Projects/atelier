@@ -4,6 +4,7 @@
 DROP TABLE IF EXISTS order_items CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
 DROP TABLE IF EXISTS cart_items CASCADE;
+DROP TABLE IF EXISTS carts CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
@@ -74,27 +75,44 @@ CREATE INDEX idx_products_is_active ON products(p_is_active);
 CREATE INDEX idx_products_price ON products(p_price);
 
 -- ----------------------------------------------
+-- CARTS TABLE
+-- ----------------------------------------------
+CREATE TABLE carts (
+    ct_id BIGSERIAL PRIMARY KEY,
+    ct_session_id VARCHAR(255) NOT NULL UNIQUE,
+    ct_total_price DECIMAL(10, 2) DEFAULT 0 CHECK (ct_total_price >= 0),
+    ct_item_count INTEGER DEFAULT 0 CHECK (ct_item_count >= 0),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_carts_session_id ON carts(ct_session_id);
+
+-- ----------------------------------------------
 -- CART_ITEMS TABLE
 -- ----------------------------------------------
 CREATE TABLE cart_items (
-    c_id BIGSERIAL PRIMARY KEY,
-    c_user_id BIGINT NOT NULL REFERENCES users(u_id) ON DELETE CASCADE,
-    c_product_id BIGINT NOT NULL REFERENCES products(p_id) ON DELETE CASCADE,
-    c_quantity INTEGER NOT NULL DEFAULT 1 CHECK (c_quantity > 0),
+    ci_id BIGSERIAL PRIMARY KEY,
+    ci_cart_id BIGINT NOT NULL REFERENCES carts(ct_id) ON DELETE CASCADE,
+    ci_product_id BIGINT NOT NULL REFERENCES products(p_id) ON DELETE CASCADE,
+    ci_quantity INTEGER NOT NULL DEFAULT 1 CHECK (ci_quantity > 0),
+    ci_unit_price DECIMAL(10, 2) NOT NULL CHECK (ci_unit_price >= 0),
+    ci_total_price DECIMAL(10, 2) NOT NULL CHECK (ci_total_price >= 0),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT unq_user_product UNIQUE (c_user_id, c_product_id)
+    CONSTRAINT unq_cart_product UNIQUE (ci_cart_id, ci_product_id)
 );
 
-CREATE INDEX idx_cart_user ON cart_items(c_user_id);
-CREATE INDEX idx_cart_product ON cart_items(c_product_id);
+CREATE INDEX idx_cart_items_cart ON cart_items(ci_cart_id);
+CREATE INDEX idx_cart_items_product ON cart_items(ci_product_id);
 
 -- ----------------------------------------------
 -- ORDERS TABLE
 -- ----------------------------------------------
 CREATE TABLE orders (
     o_id BIGSERIAL PRIMARY KEY,
+    o_order_number VARCHAR(50) NOT NULL UNIQUE,
     o_customer_id BIGINT NOT NULL REFERENCES users(u_id) ON DELETE CASCADE,
 
     o_subtotal DECIMAL(10, 2) NOT NULL CHECK (o_subtotal >= 0),
@@ -121,6 +139,7 @@ CREATE TABLE orders (
     o_completed_at TIMESTAMP
 );
 
+CREATE INDEX idx_orders_order_number ON orders(o_order_number);
 CREATE INDEX idx_orders_customer ON orders(o_customer_id);
 CREATE INDEX idx_orders_status ON orders(o_status);
 CREATE INDEX idx_orders_created_at ON orders(created_at);

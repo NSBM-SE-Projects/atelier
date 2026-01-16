@@ -35,7 +35,7 @@ public class DotEnvConfig {
                     System.out.println("✓ Loaded .env from: " + envFile.getAbsolutePath());
                     return;
                 } catch (IOException e) {
-                    System.err.println("Failed to load ..env: " + e.getMessage());
+                    System.err.println("Failed to load .env: " + e.getMessage());
                 }
             }
         }
