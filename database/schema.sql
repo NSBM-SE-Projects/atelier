@@ -112,6 +112,7 @@ CREATE INDEX idx_cart_items_product ON cart_items(ci_product_id);
 -- ----------------------------------------------
 CREATE TABLE orders (
     o_id BIGSERIAL PRIMARY KEY,
+    o_order_number VARCHAR(50) NOT NULL UNIQUE,
     o_customer_id BIGINT NOT NULL REFERENCES users(u_id) ON DELETE CASCADE,
 
     o_subtotal DECIMAL(10, 2) NOT NULL CHECK (o_subtotal >= 0),
@@ -138,6 +139,7 @@ CREATE TABLE orders (
     o_completed_at TIMESTAMP
 );
 
+CREATE INDEX idx_orders_order_number ON orders(o_order_number);
 CREATE INDEX idx_orders_customer ON orders(o_customer_id);
 CREATE INDEX idx_orders_status ON orders(o_status);
 CREATE INDEX idx_orders_created_at ON orders(created_at);

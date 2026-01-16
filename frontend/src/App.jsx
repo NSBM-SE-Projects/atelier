@@ -13,6 +13,8 @@ import useAuthStore from './store/authStore';
 import ItemPage from './pages/ItemPage';
 import Store from './pages/Store';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
+import OrderConfirmation from './pages/OrderConfirmation';
 import Men from './pages/Men';
 import Women from './pages/Women';
 import Kids from './pages/Kids';
@@ -47,6 +49,10 @@ function AppContent() {
         <Route path="/item/:id" element={<ItemPage />} />
         {/* Cart Page */}
         <Route path="/cart" element={<Cart />} />
+        {/* Checkout Page (Protected) */}
+        <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+        {/* Order Confirmation Page (Protected) */}
+        <Route path="/order-confirmation/:orderNumber" element={<ProtectedRoute><OrderConfirmation /></ProtectedRoute>} />
         {/* Men's Page */}
         <Route path="/men" element={<Men />} />
         {/* Women's Page */}

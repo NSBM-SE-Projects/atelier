@@ -8,7 +8,12 @@ import lombok.*;
 @Builder
 public class CreateOrderRequest {
 
-    private String customerEmail;
-    private String customerName;
+    private Long customerId;
     private String sessionId;
+    private String shippingAddress;
+    private String shippingCity;
+    private String shippingPostalCode;
+    private String shippingCountry;
+    private String paymentMethod;
+    private String customerNotes;
 }
