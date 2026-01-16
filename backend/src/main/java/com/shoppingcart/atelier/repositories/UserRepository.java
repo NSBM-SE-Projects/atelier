@@ -2,6 +2,8 @@ package com.shoppingcart.atelier.repositories;
 
 import com.shoppingcart.atelier.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,4 +25,29 @@ public interface UserRepository extends JpaRepository<User, Long> {
     long countByUserType(String userType);
 
     List<User> findAllByUserType(String userType);
+
+    // Case-insensitive queries for customer type
+    @Query("SELECT u FROM User u WHERE LOWER(u.userType) = LOWER(:userType)")
+    List<User> findAllByUserTypeIgnoreCase(@Param("userType") String userType);
+
+    @Query("SELECT COUNT(u) FROM User u WHERE LOWER(u.userType) = LOWER(:userType)")
+    long countByUserTypeIgnoreCase(@Param("userType") String userType);
+
+    @Query("SELECT COUNT(u) FROM User u WHERE LOWER(u.userType) = LOWER(:userType) AND u.isActive = true")
+    long countActiveByUserType(@Param("userType") String userType);
+
+    @Query("SELECT COUNT(u) FROM User u WHERE LOWER(u.userType) = LOWER(:userType) AND u.isActive = false")
+    long countInactiveByUserType(@Param("userType") String userType);
+
+    // Find customer by ID and type
+    @Query("SELECT u FROM User u WHERE u.id = :id AND LOWER(u.userType) = LOWER(:userType)")
+    Optional<User> findByIdAndUserTypeIgnoreCase(@Param("id") Long id, @Param("userType") String userType);
+
+    // Native SQL query to count customers directly from database
+    @Query(value = "SELECT COUNT(*) FROM users WHERE LOWER(u_type) = 'customer'", nativeQuery = true)
+    long countCustomers();
+
+    // Native SQL query to count all users
+    @Query(value = "SELECT COUNT(*) FROM users", nativeQuery = true)
+    long countAllUsers();
 }

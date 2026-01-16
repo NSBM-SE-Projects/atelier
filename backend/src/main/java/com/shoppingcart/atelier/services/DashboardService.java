@@ -27,30 +27,68 @@ public class DashboardService {
         // Get start of today
         LocalDateTime startOfDay = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
 
-        // Count customers (users with type CUSTOMER only)
-        long totalCustomers = userRepository.countByUserType("CUSTOMER");
+        // Count customers - direct SQL query
+        long totalCustomers = 0;
+        try {
+            totalCustomers = userRepository.countCustomers();
+        } catch (Exception e) {
+            System.err.println("Error counting customers: " + e.getMessage());
+        }
 
         // Count products
-        long totalProducts = productRepository.countByIsActiveTrue();
+        long totalProducts = 0;
+        try {
+            totalProducts = productRepository.countByIsActiveTrue();
+        } catch (Exception e) {
+            System.err.println("Error counting products: " + e.getMessage());
+            // Try counting all products as fallback
+            try {
+                totalProducts = productRepository.count();
+            } catch (Exception e2) {
+                System.err.println("Error counting all products: " + e2.getMessage());
+            }
+        }
 
         // Count orders
-        long totalOrders = orderRepository.count();
+        long totalOrders = 0;
+        try {
+            totalOrders = orderRepository.count();
+        } catch (Exception e) {
+            System.err.println("Error counting orders: " + e.getMessage());
+        }
 
         // Get total revenue
-        BigDecimal totalRevenue = orderRepository.getTotalRevenue();
+        BigDecimal totalRevenue = BigDecimal.ZERO;
+        try {
+            totalRevenue = orderRepository.getTotalRevenue();
+            if (totalRevenue == null) totalRevenue = BigDecimal.ZERO;
+        } catch (Exception e) {
+            System.err.println("Error getting total revenue: " + e.getMessage());
+        }
 
         // Get daily sales
-        BigDecimal dailySales = orderRepository.getDailySales(startOfDay);
+        BigDecimal dailySales = BigDecimal.ZERO;
+        try {
+            dailySales = orderRepository.getDailySales(startOfDay);
+            if (dailySales == null) dailySales = BigDecimal.ZERO;
+        } catch (Exception e) {
+            System.err.println("Error getting daily sales: " + e.getMessage());
+        }
 
         // Get daily orders count
-        long dailyOrders = orderRepository.countDailyOrders(startOfDay);
+        long dailyOrders = 0;
+        try {
+            dailyOrders = orderRepository.countDailyOrders(startOfDay);
+        } catch (Exception e) {
+            System.err.println("Error counting daily orders: " + e.getMessage());
+        }
 
         return DashboardStatsResponse.builder()
                 .totalCustomers(totalCustomers)
                 .totalOrders(totalOrders)
                 .totalProducts(totalProducts)
-                .totalRevenue(totalRevenue != null ? totalRevenue : BigDecimal.ZERO)
-                .dailySales(dailySales != null ? dailySales : BigDecimal.ZERO)
+                .totalRevenue(totalRevenue)
+                .dailySales(dailySales)
                 .dailyOrders(dailyOrders)
                 .build();
     }

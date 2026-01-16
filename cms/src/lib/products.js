@@ -5,8 +5,28 @@ export const getAllProducts = async () => {
   return response.data;
 };
 
+export const getCategories = async () => {
+  const response = await api.get('/admin/products/categories');
+  return response.data;
+};
+
 export const getProductById = async (id) => {
   const response = await api.get(`/admin/products/${id}`);
+  return response.data;
+};
+
+export const createProduct = async (productData) => {
+  const response = await api.post('/admin/products', productData);
+  return response.data;
+};
+
+export const updateProduct = async (id, productData) => {
+  const response = await api.put(`/admin/products/${id}`, productData);
+  return response.data;
+};
+
+export const deleteProduct = async (id) => {
+  const response = await api.delete(`/admin/products/${id}`);
   return response.data;
 };
 

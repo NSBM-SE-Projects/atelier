@@ -57,10 +57,13 @@ const Dashboard = () => {
         getDashboardStats(),
         getTopSpenders(),
       ]);
-      setStats(statsData);
-      setTopSpenders(spendersData);
+      console.log('Dashboard stats:', statsData);
+      setStats(statsData || {});
+      setTopSpenders(spendersData || []);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
+      setStats({});
+      setTopSpenders([]);
     } finally {
       setLoading(false);
     }
@@ -224,7 +227,7 @@ const Dashboard = () => {
                 <p className="text-gray-500 text-sm font-medium">Total Customers</p>
                 <p className="text-xs text-green-500 mt-1">+8% New Users</p>
                 <p className="text-2xl font-bold text-gray-900 mt-2">
-                  {loading ? '---' : stats?.totalCustomers?.toLocaleString()}
+                  {loading ? '---' : (stats?.totalCustomers ?? 0).toLocaleString()}
                 </p>
               </div>
             </Card>
@@ -237,7 +240,7 @@ const Dashboard = () => {
                 <p className="text-gray-500 text-sm font-medium">Products</p>
                 <p className="text-xs text-gray-400 mt-1">Active Items</p>
                 <p className="text-2xl font-bold text-gray-900 mt-2">
-                  {loading ? '---' : stats?.totalProducts?.toLocaleString()}
+                  {loading ? '---' : (stats?.totalProducts ?? 0).toLocaleString()}
                 </p>
               </div>
             </Card>
@@ -250,7 +253,7 @@ const Dashboard = () => {
                 <p className="text-gray-500 text-sm font-medium">Total Orders</p>
                 <p className="text-xs text-gray-400 mt-1">All Time</p>
                 <p className="text-2xl font-bold text-gray-900 mt-2">
-                  {loading ? '---' : stats?.totalOrders?.toLocaleString()}
+                  {loading ? '---' : (stats?.totalOrders ?? 0).toLocaleString()}
                 </p>
               </div>
             </Card>
