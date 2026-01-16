@@ -20,6 +20,7 @@ import Women from './pages/Women';
 import Kids from './pages/Kids';
 import Accessories from './pages/Accessories';
 import Gifts from './pages/Gifts';
+import AboutUs from './pages/AboutUs';
 import './App.css';
 
 function AppContent() {
@@ -63,6 +64,8 @@ function AppContent() {
         <Route path="/accessories" element={<Accessories />} />
         {/* Gifts Page */}
         <Route path="/gifts" element={<Gifts />} />
+        {/* About Us Page */}
+        <Route path="/about" element={<AboutUs />} />
       </Routes>
       {!hideLayout && <Footer />}
     </>
