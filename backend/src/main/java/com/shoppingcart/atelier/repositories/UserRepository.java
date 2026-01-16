@@ -47,6 +47,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT COUNT(*) FROM users WHERE LOWER(u_type) = 'customer'", nativeQuery = true)
     long countCustomers();
 
+    // Native SQL query to count active customers
+    @Query(value = "SELECT COUNT(*) FROM users WHERE LOWER(u_type) = 'customer' AND u_is_active = true", nativeQuery = true)
+    long countActiveCustomers();
+
+    // Native SQL query to count inactive customers
+    @Query(value = "SELECT COUNT(*) FROM users WHERE LOWER(u_type) = 'customer' AND u_is_active = false", nativeQuery = true)
+    long countInactiveCustomers();
+
+    // Native SQL query to get all customers
+    @Query(value = "SELECT * FROM users WHERE LOWER(u_type) = 'customer' ORDER BY created_at DESC", nativeQuery = true)
+    List<User> findAllCustomers();
+
     // Native SQL query to count all users
     @Query(value = "SELECT COUNT(*) FROM users", nativeQuery = true)
     long countAllUsers();

@@ -18,45 +18,22 @@ public class CustomerService {
     private final UserRepository userRepository;
 
     /**
-     * Get all customers - fetches all users and filters by type in Java
-     * This approach works regardless of database case sensitivity
+     * Get all customers - direct SQL query
      */
     public List<CustomerDTO> getAllCustomers() {
-        // Get ALL users from database
-        List<User> allUsers = userRepository.findAll();
-        System.out.println("=== Total users in database: " + allUsers.size() + " ===");
-
-        // Log all user types for debugging
-        allUsers.forEach(user -> {
-            System.out.println("User ID: " + user.getId() + ", Type: '" + user.getUserType() + "', Name: " + user.getFullName());
-        });
-
-        // Filter to only customers (case-insensitive check in Java, with trim)
-        List<CustomerDTO> customers = allUsers.stream()
-                .filter(user -> user.getUserType() != null &&
-                        user.getUserType().trim().equalsIgnoreCase("CUSTOMER"))
+        List<User> customers = userRepository.findAllCustomers();
+        return customers.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
-
-        System.out.println("=== Filtered customers: " + customers.size() + " ===");
-        return customers;
     }
 
     /**
-     * Get customer counts - total, active, inactive
+     * Get customer counts - direct SQL queries
      */
     public Map<String, Long> getCustomerCounts() {
-        List<User> allUsers = userRepository.findAll();
-
-        // Filter customers in Java
-        List<User> customers = allUsers.stream()
-                .filter(user -> user.getUserType() != null &&
-                        user.getUserType().trim().equalsIgnoreCase("CUSTOMER"))
-                .collect(Collectors.toList());
-
-        long total = customers.size();
-        long active = customers.stream().filter(u -> Boolean.TRUE.equals(u.getIsActive())).count();
-        long inactive = customers.stream().filter(u -> !Boolean.TRUE.equals(u.getIsActive())).count();
+        long total = userRepository.countCustomers();
+        long active = userRepository.countActiveCustomers();
+        long inactive = userRepository.countInactiveCustomers();
 
         Map<String, Long> counts = new HashMap<>();
         counts.put("total", total);
@@ -66,17 +43,11 @@ public class CustomerService {
     }
 
     /**
-     * Get customer by ID - verifies the user is a customer
+     * Get customer by ID
      */
     public CustomerDTO getCustomerById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Customer not found with ID: " + id));
-
-        // Verify it's a customer
-        if (user.getUserType() == null || !user.getUserType().trim().equalsIgnoreCase("CUSTOMER")) {
-            throw new RuntimeException("User with ID " + id + " is not a customer");
-        }
-
         return mapToDTO(user);
     }
 
@@ -86,11 +57,6 @@ public class CustomerService {
     public CustomerDTO updateCustomerStatus(Long id, Boolean isActive) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Customer not found with ID: " + id));
-
-        if (user.getUserType() == null || !user.getUserType().trim().equalsIgnoreCase("CUSTOMER")) {
-            throw new RuntimeException("User with ID " + id + " is not a customer");
-        }
-
         user.setIsActive(isActive);
         userRepository.save(user);
         return mapToDTO(user);
@@ -103,11 +69,6 @@ public class CustomerService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Customer not found with ID: " + id));
 
-        if (user.getUserType() == null || !user.getUserType().trim().equalsIgnoreCase("CUSTOMER")) {
-            throw new RuntimeException("User with ID " + id + " is not a customer");
-        }
-
-        // Update allowed fields (not ID, not userType)
         if (customerDTO.getFullName() != null) {
             user.setFullName(customerDTO.getFullName());
         }

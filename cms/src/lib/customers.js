@@ -1,9 +1,7 @@
 import api from './api';
 
 export const getAllCustomers = async () => {
-  // Using debug endpoint to get ALL users and verify data is returned
-  const response = await api.get('/admin/customers/debug/all-as-dto');
-  console.log('DEBUG - Raw response:', response);
+  const response = await api.get('/admin/customers');
   return response.data;
 };
 
