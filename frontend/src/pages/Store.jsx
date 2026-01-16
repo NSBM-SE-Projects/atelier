@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import api from '@/lib/api';
 
 const Store = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
@@ -14,12 +15,8 @@ const Store = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/api/products');
-      if (!response.ok) {
-        throw new Error('Failed to fetch products');
-      }
-      const data = await response.json();
-      setProducts(data);
+      const response = await api.get('/products');
+      setProducts(response.data);
     } catch (err) {
       setError(err.message);
       console.error('Error fetching products:', err);
