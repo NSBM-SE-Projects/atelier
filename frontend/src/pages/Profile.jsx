@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -8,20 +8,60 @@ import useAuthStore from '@/store/authStore';
 const Profile = () => {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.setUser);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(true);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [profileData, setProfileData] = useState(null);
 
   const [formData, setFormData] = useState({
-    email: user?.email || '',
-    fullName: user?.fullName || '',
-    phone: user?.phone || '',
-    address: user?.address || '',
-    city: user?.city || '',
-    postalCode: user?.postalCode || '',
-    country: user?.country || '',
+    email: profileData?.email || '',
+    fullName: profileData?.fullName || '',
+    phone: profileData?.phone || '',
+    address: profileData?.address || '',
+    city: profileData?.city || '',
+    postalCode: profileData?.postalCode || '',
+    country: profileData?.country || '',
   });
+
+  // Fetch full profile data on mount
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        if (!user?.userId) {
+          setIsPageLoading(false);
+          return;
+        }
+
+        setIsPageLoading(true);
+        const response = await api.get(`/users/${user.userId}`);
+        setProfileData(response.data);
+        setFormData({
+          email: response.data.email || '',
+          fullName: response.data.fullName || '',
+          phone: response.data.phone || '',
+          address: response.data.address || '',
+          city: response.data.city || '',
+          postalCode: response.data.postalCode || '',
+          country: response.data.country || '',
+        });
+        // Update Zustand store with full profile data
+        setUser({ ...user, ...response.data });
+      } catch (err) {
+        console.error('Failed to fetch profile:', err);
+        setError('Failed to load profile. Please try again.');
+        setIsPageLoading(false);
+      } finally {
+        if (isPageLoading) {
+          setIsPageLoading(false);
+        }
+      }
+    };
+
+    fetchProfile();
+  }, [user?.userId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,15 +73,15 @@ const Profile = () => {
 
   const handleEditToggle = () => {
     if (isEditMode) {
-      // Reset form to current user data
+      // Reset form to current profile data
       setFormData({
-        email: user?.email || '',
-        fullName: user?.fullName || '',
-        phone: user?.phone || '',
-        address: user?.address || '',
-        city: user?.city || '',
-        postalCode: user?.postalCode || '',
-        country: user?.country || '',
+        email: profileData?.email || '',
+        fullName: profileData?.fullName || '',
+        phone: profileData?.phone || '',
+        address: profileData?.address || '',
+        city: profileData?.city || '',
+        postalCode: profileData?.postalCode || '',
+        country: profileData?.country || '',
       });
     }
     setError('');
@@ -64,12 +104,15 @@ const Profile = () => {
     try {
       const response = await api.put(`/users/${user.userId}`, formData);
 
+      // Update profileData state
+      setProfileData(response.data);
+
       // Update localStorage
       const updatedUser = { ...user, ...response.data };
       localStorage.setItem('user', JSON.stringify(updatedUser));
 
       // Update Zustand store
-      useAuthStore.getState().setUser(updatedUser);
+      setUser(updatedUser);
 
       setSuccessMessage('Profile updated successfully!');
       setIsEditMode(false);
@@ -94,6 +137,18 @@ const Profile = () => {
       setIsLoading(false);
     }
   };
+
+  if (isPageLoading) {
+    return (
+      <div className="min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-8rem)] bg-gray-50">
+        <div className="container mx-auto px-4 py-8 md:py-12 max-w-2xl">
+          <div className="bg-white rounded-lg shadow-md p-8 text-center">
+            <p className="text-gray-600">Loading profile...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-8rem)] bg-gray-50">
@@ -129,12 +184,12 @@ const Profile = () => {
           {!isEditMode ? (
             // View Mode
             <>
-              <div className="space-y-6">
+              <div className="space-y-6 font-serif">
                 {/* Username (Read-only) */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2 font-serif">Username</label>
                   <div className="px-4 py-3 bg-gray-100 rounded-lg text-gray-900">
-                    {user?.username}
+                    {profileData?.username}
                   </div>
                 </div>
 
@@ -142,7 +197,7 @@ const Profile = () => {
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Email</label>
                   <div className="px-4 py-3 bg-gray-100 rounded-lg text-gray-900">
-                    {user?.email}
+                    {profileData?.email}
                   </div>
                 </div>
 
@@ -150,7 +205,7 @@ const Profile = () => {
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
                   <div className="px-4 py-3 bg-gray-100 rounded-lg text-gray-900">
-                    {user?.fullName || 'Not provided'}
+                    {profileData?.fullName || 'Not provided'}
                   </div>
                 </div>
 
@@ -158,7 +213,7 @@ const Profile = () => {
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
                   <div className="px-4 py-3 bg-gray-100 rounded-lg text-gray-900">
-                    {user?.phone || 'Not provided'}
+                    {profileData?.phone || 'Not provided'}
                   </div>
                 </div>
 
@@ -166,7 +221,7 @@ const Profile = () => {
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Address</label>
                   <div className="px-4 py-3 bg-gray-100 rounded-lg text-gray-900">
-                    {user?.address || 'Not provided'}
+                    {profileData?.address || 'Not provided'}
                   </div>
                 </div>
 
@@ -174,7 +229,7 @@ const Profile = () => {
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">City</label>
                   <div className="px-4 py-3 bg-gray-100 rounded-lg text-gray-900">
-                    {user?.city || 'Not provided'}
+                    {profileData?.city || 'Not provided'}
                   </div>
                 </div>
 
@@ -182,7 +237,7 @@ const Profile = () => {
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Postal Code</label>
                   <div className="px-4 py-3 bg-gray-100 rounded-lg text-gray-900">
-                    {user?.postalCode || 'Not provided'}
+                    {profileData?.postalCode || 'Not provided'}
                   </div>
                 </div>
 
@@ -190,7 +245,7 @@ const Profile = () => {
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Country</label>
                   <div className="px-4 py-3 bg-gray-100 rounded-lg text-gray-900">
-                    {user?.country || 'Not provided'}
+                    {profileData?.country || 'Not provided'}
                   </div>
                 </div>
               </div>
@@ -213,7 +268,7 @@ const Profile = () => {
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Username</label>
                   <div className="px-4 py-3 bg-gray-100 rounded-lg text-gray-900">
-                    {user?.username}
+                    {profileData?.username}
                   </div>
                   <p className="text-xs text-gray-500 mt-1">Username cannot be changed</p>
                 </div>
@@ -227,7 +282,7 @@ const Profile = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
+                    className="w-full px-4 py-3 bg-white text-gray-900 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
                   />
                 </div>
 
@@ -239,7 +294,7 @@ const Profile = () => {
                     name="fullName"
                     value={formData.fullName}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
+                    className="w-full px-4 py-3 bg-white text-gray-900 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
                   />
                 </div>
 
@@ -251,7 +306,7 @@ const Profile = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
+                    className="w-full px-4 py-3 bg-white text-gray-900 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
                   />
                 </div>
 
@@ -263,7 +318,7 @@ const Profile = () => {
                     name="address"
                     value={formData.address}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
+                    className="w-full px-4 py-3 bg-white text-gray-900 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
                   />
                 </div>
 
@@ -275,7 +330,7 @@ const Profile = () => {
                     name="city"
                     value={formData.city}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
+                    className="w-full px-4 py-3 bg-white text-gray-900 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
                   />
                 </div>
 
@@ -287,7 +342,7 @@ const Profile = () => {
                     name="postalCode"
                     value={formData.postalCode}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
+                    className="w-full px-4 py-3 bg-white text-gray-900 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
                   />
                 </div>
 
@@ -299,7 +354,7 @@ const Profile = () => {
                     name="country"
                     value={formData.country}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
+                    className="w-full px-4 py-3 bg-white text-gray-900 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-600"
                   />
                 </div>
 
@@ -308,7 +363,7 @@ const Profile = () => {
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="flex-1 bg-gray-950 hover:bg-gray-900 text-white py-3 rounded-lg font-semibold disabled:opacity-50"
+                    className="flex-1 bg-gray-950 hover:bg-gray-900 text-white py-3 h-12 rounded-lg font-semibold disabled:opacity-50"
                   >
                     {isLoading ? 'Saving...' : 'Save Changes'}
                   </Button>
@@ -316,7 +371,7 @@ const Profile = () => {
                     type="button"
                     onClick={handleEditToggle}
                     disabled={isLoading}
-                    className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-900 py-3 rounded-lg font-semibold disabled:opacity-50"
+                    className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-900 py-3 h-12 rounded-lg font-semibold disabled:opacity-50"
                   >
                     Cancel
                   </Button>
