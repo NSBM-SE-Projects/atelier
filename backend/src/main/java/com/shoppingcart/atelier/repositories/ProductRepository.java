@@ -9,12 +9,15 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    // All active products
-    List<Product> findByPIsActiveTrue();
+    List<Product> findByIsActiveTrue();
 
-    // Find featured and active products
-    List<Product> findByPIsFeaturedTrueAndPIsActiveTrue();
+    List<Product> findByCategoryIdAndIsActiveTrue(Long categoryId);
 
-    // Find latest active products ordered by creation date
-    List<Product> findTop4ByPIsActiveTrueOrderByCreatedAtDesc();
+    List<Product> findByGenderAndIsActiveTrue(String gender);
+
+    List<Product> findByNameContainingIgnoreCaseAndIsActiveTrue(String name);
+
+    List<Product> findByIsFeaturedTrueAndIsActiveTrue();
+
+    List<Product> findTop4ByIsActiveTrueOrderByCreatedAtDesc();
 }

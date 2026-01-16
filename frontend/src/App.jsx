@@ -10,6 +10,14 @@ import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import Test from './pages/Test';
 import useAuthStore from './store/authStore';
+import ItemPage from './pages/ItemPage';
+import Store from './pages/Store';
+import Cart from './pages/Cart';
+import Men from './pages/Men';
+import Women from './pages/Women';
+import Kids from './pages/Kids';
+import Accessories from './pages/Accessories';
+import Gifts from './pages/Gifts';
 import './App.css';
 
 function AppContent() {
@@ -23,16 +31,32 @@ function AppContent() {
       <Routes>
         {/* Home Page */}
         <Route path="/" element={<Home />} />
-        {/* Contact Page */}
-        <Route path="/contact" element={<Contact />} />
-        {/* Test/Health Check Page */}
-        <Route path="/test" element={<Test />} />
         {/* Login Page */}
         <Route path="/login" element={<Login />} />
         {/* Signup Page */}
         <Route path="/signup" element={<Signup />} />
         {/* Profile Page (Protected) */}
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        {/* Shop/Store Page */}
+        <Route path="/shop" element={<Store />} />
+        {/* Test/Health Check Page */}
+        <Route path="/test" element={<Test />} />
+        {/* Contact Page */}
+        <Route path="/contact" element={<Contact />} />
+        {/* Item Page */}
+        <Route path="/item/:id" element={<ItemPage />} />
+        {/* Cart Page */}
+        <Route path="/cart" element={<Cart />} />
+        {/* Men's Page */}
+        <Route path="/men" element={<Men />} />
+        {/* Women's Page */}
+        <Route path="/women" element={<Women />} />
+        {/* Kids Page */}
+        <Route path="/kids" element={<Kids />} />
+        {/* Accessories Page */}
+        <Route path="/accessories" element={<Accessories />} />
+        {/* Gifts Page */}
+        <Route path="/gifts" element={<Gifts />} />
       </Routes>
       {!hideLayout && <Footer />}
     </>

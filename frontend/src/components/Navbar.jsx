@@ -1,8 +1,14 @@
 import { useState } from 'react';
-import { ShoppingCart, User, Menu, ChevronRight, LogOut } from 'lucide-react';
+import { ShoppingCart, User, Menu, ChevronRight, LogOut, ChevronDown } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
 import { Badge } from './ui/badge';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem
+} from './ui/dropdown-menu';
 import useAuthStore from '@/store/authStore';
 import logo from '../assets/atelier-logo.png';
 
@@ -21,17 +27,15 @@ const Navbar = () => {
 
   const mainLinks = [
     { name: 'HOME', path: '/' },
-    { name: 'SHOP', path: '/shop' },
-    { name: 'NEW ARRIVALS', path: '/new-arrivals' },
-    { name: 'COLLECTION', path: '/collection' }
+    { name: 'SHOP', path: '/shop' }
   ];
 
   const categories = [
-    { name: 'Men', path: '/category/men' },
-    { name: 'Women', path: '/category/women' },
-    { name: 'Kids', path: '/category/kids' },
-    { name: 'Accessories', path: '/category/accessories' },
-    { name: 'Gifts', path: '/category/gifts' },
+    { name: 'Men', path: '/men' },
+    { name: 'Women', path: '/women' },
+    { name: 'Kids', path: '/kids' },
+    { name: 'Accessories', path: '/accessories' },
+    { name: 'Gifts', path: '/gifts' },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -117,6 +121,28 @@ const Navbar = () => {
                     {link.name}
                   </Link>
                 ))}
+
+                {/* Categories Dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className=" -mt-1 -ml-3 group flex items-center gap-1 text-sm font-black !text-gray-100 transition-all duration-200 hover:!text-gray-950 bg-transparent border-b-2 border-transparent outline-none pb-1 focus:ring-0 focus:outline-none focus:border-none">
+                      CATEGORIES
+                      <ChevronDown size={16} className="text-gray-100 transition-colors group-hover:text-gray-950" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="center" className="w-36 z-50 bg-red-600 border-gray-900">
+                    {categories.map((category) => (
+                      <DropdownMenuItem key={category.name} asChild>
+                        <Link
+                          to={category.path}
+                          className="w-full cursor-pointer text-gray-900 font-semibold"
+                        >
+                          {category.name}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
 
@@ -188,27 +214,6 @@ const Navbar = () => {
                 </Link>
               )}
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Categories - Desktop Only */}
-      <div className="hidden lg:block ">
-        <div className="container mx-auto">
-          <div className="flex items-center justify-center h-12 gap-12">
-            {categories.map((category) => (
-              <Link
-                key={category.name}
-                to={category.path}
-                className={`text-sm font-black transition-all duration-200 ${
-                  isActive(category.path)
-                    ? 'text-gray-900 border-b-2 border-gray-900 hover:text-gray-950'
-                    : 'text-gray-300 hover:text-gray-950'
-                }`}
-              >
-                {category.name}
-              </Link>
-            ))}
           </div>
         </div>
       </div>
