@@ -45,7 +45,7 @@ const AboutUs = () => {
       {/* Hero Section */}
       <section className="relative flex items-center justify-center w-full py-20 sm:py-28 md:py-36 bg-gradient-to-b from-red-600 via-red-800 to-red-950">
         <div className="container px-6 text-center">
-          <h1 className="mb-4 font-serif text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl">
+          <h1 className="mb-4 font-serif text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl italic">
             About Us
           </h1>
           <p className="max-w-xl mx-auto text-lg text-red-200 md:text-xl">
@@ -58,7 +58,7 @@ const AboutUs = () => {
       <section className="py-16 sm:py-20 md:py-24">
         <div className="container max-w-4xl px-6 mx-auto">
           <div className="mb-12 text-center">
-            <h2 className="mb-8 font-serif text-3xl font-bold text-gray-900 sm:text-4xl md:text-5xl">
+            <h2 className="mb-8 font-serif text-3xl font-bold text-gray-900 sm:text-4xl md:text-5xl italic">
               Our Story
             </h2>
           </div>
@@ -90,7 +90,7 @@ const AboutUs = () => {
       <section className="py-16 sm:py-20 md:py-24">
         <div className="container max-w-6xl px-6 mx-auto">
           <div className="mb-12 text-center sm:mb-16">
-            <h2 className="mb-2 font-serif text-3xl font-bold text-gray-900 sm:text-4xl md:text-5xl">
+            <h2 className="mb-2 font-serif text-3xl font-bold text-gray-900 sm:text-4xl md:text-5xl italic">
               Meet Our Team
             </h2>
             <p className="font-serif text-lg italic text-gray-600">
@@ -128,7 +128,7 @@ const AboutUs = () => {
       {/* Bottom CTA Section */}
       <section className="py-16 sm:py-20 bg-gradient-to-b from-gray-100 to-white">
         <div className="container max-w-3xl px-6 mx-auto text-center">
-          <h2 className="mb-4 font-serif text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
+          <h2 className="mb-4 font-serif text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl italic">
             Experience Luxury
           </h2>
           <p className="mb-8 font-serif text-lg italic text-gray-600">
