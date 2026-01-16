@@ -15,24 +15,24 @@ public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_id")
+    @Column(name = "ci_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "c_cart_id")
+    @JoinColumn(name = "ci_cart_id")
     private Cart cart;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "c_product_id")
+    @JoinColumn(name = "ci_product_id")
     private Product product;
 
-    @Column(name = "quantity")
+    @Column(name = "ci_quantity")
     private Integer quantity;
 
-    @Column(name = "unit_price", precision = 10, scale = 2)
+    @Column(name = "ci_unit_price", precision = 10, scale = 2)
     private BigDecimal unitPrice;
 
-    @Column(name = "total_price", precision = 10, scale = 2)
+    @Column(name = "ci_total_price", precision = 10, scale = 2)
     private BigDecimal totalPrice;
 
     @Column(name = "created_at", nullable = false, updatable = false)

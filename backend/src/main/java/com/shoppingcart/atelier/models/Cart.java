@@ -17,20 +17,20 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_id")
+    @Column(name = "ct_id")
     private Long id;
 
-    @Column(name = "session_id", nullable = false, unique = true)
+    @Column(name = "ct_session_id", nullable = false, unique = true)
     private String sessionId;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<CartItem> items = new ArrayList<>();
 
-    @Column(name = "total_price", precision = 10, scale = 2)
+    @Column(name = "ct_total_price", precision = 10, scale = 2)
     private BigDecimal totalPrice;
 
-    @Column(name = "item_count")
+    @Column(name = "ct_item_count")
     private Integer itemCount;
 
     @Column(name = "created_at", nullable = false, updatable = false)

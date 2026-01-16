@@ -45,6 +45,15 @@ public class ProductController {
         return ResponseEntity.ok(dtos);
     }
 
+    @GetMapping("/latest")
+    public ResponseEntity<List<ProductDTO>> getLatestProducts() {
+        List<Product> products = productService.getLatestProducts();
+        List<ProductDTO> dtos = products.stream()
+                .map(ProductMapper::toDTO)
+                .toList();
+        return ResponseEntity.ok(dtos);
+    }
+
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<ProductDTO>> getProductsByCategory(@PathVariable Long categoryId) {
         List<Product> products = productService.getProductsByCategory(categoryId);

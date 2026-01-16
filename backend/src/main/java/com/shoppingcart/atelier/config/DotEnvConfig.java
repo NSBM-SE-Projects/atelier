@@ -13,7 +13,7 @@ public class DotEnvConfig {
     }
 
     private static void loadEnvFile() {
-        String[] paths = {".env", "../.env"};
+        String[] paths = {".env", "./.env"};
 
         for (String path : paths) {
             File envFile = new File(path);

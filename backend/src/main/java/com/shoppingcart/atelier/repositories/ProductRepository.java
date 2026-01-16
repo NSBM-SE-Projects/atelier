@@ -11,11 +11,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByIsActiveTrue();
 
-    List<Product> findByIsFeaturedTrueAndIsActiveTrue();
-
     List<Product> findByCategoryIdAndIsActiveTrue(Long categoryId);
 
     List<Product> findByGenderAndIsActiveTrue(String gender);
 
     List<Product> findByNameContainingIgnoreCaseAndIsActiveTrue(String name);
+
+    List<Product> findByIsFeaturedTrueAndIsActiveTrue();
+
+    List<Product> findTop4ByIsActiveTrueOrderByCreatedAtDesc();
 }

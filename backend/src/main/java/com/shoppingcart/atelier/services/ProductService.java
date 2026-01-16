@@ -26,6 +26,10 @@ public class ProductService {
         return productRepository.findByIsFeaturedTrueAndIsActiveTrue();
     }
 
+    public List<Product> getLatestProducts() {
+        return productRepository.findTop4ByIsActiveTrueOrderByCreatedAtDesc();
+    }
+
     public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }

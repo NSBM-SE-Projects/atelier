@@ -1,20 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const Store = () => {
+const Accessories = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchProducts();
   }, []);
 
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/api/products');
+      const response = await fetch('http://localhost:8080/api/products/category/4');
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }
@@ -46,11 +47,11 @@ const Store = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Shop Banner */}
+      {/* Accessories Banner */}
       <div className="bg-gray-100 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-16">
-          <h1 className="text-4xl md:text-5xl font-black font-serif italic text-gray-900">Shop</h1>
-          <p className="text-gray-600 mt-2 font-serif italic">Browse our collection of fashion items</p>
+          <h1 className="text-4xl md:text-5xl font-black font-serif italic text-gray-900">Accessories</h1>
+          <p className="text-gray-600 mt-2 font-serif italic">Bags, belts, hats, and more</p>
         </div>
       </div>
 
@@ -100,4 +101,4 @@ const Store = () => {
   );
 };
 
-export default Store;
+export default Accessories;

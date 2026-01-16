@@ -13,104 +13,92 @@ const Footer = () => {
   };
 
   return (
-    <footer className="w-full bg-gray-300">
+    <footer className="w-full bg-gray-300 -mb-6">
       {/* Top Banner */}
-      <div className="w-full py-8 bg-gray-300">
-        <div className="container px-4 mx-auto text-center">
-          <h2 className="font-serif text-lg font-bold text-gray-900">
-            Hurry, Shop Now and Embrace the Essence of Atelier Unique Style!
+      <div className="w-full py-6 sm:py-8 bg-gray-300">
+        <div className="container px-4 sm:px-6 mx-auto text-center">
+          <h2 className="font-serif italic text-base sm:text-lg md:text-xl font-black text-gray-800">
+            Hurry, Shop Now and Embrace the Essence of Atelier's Unique Style!
           </h2>
         </div>
       </div>
 
       {/* Main Footer Content */}
-      <div className="py-16 bg-gray-300">
-        <div className="container px-4 mx-auto">
-          <div className="grid grid-cols-1 gap-16 mb-12 md:grid-cols-3">
-            {/* Left Column - Logo & Newsletter */}
-            <div>
-              <h3 className="mb-12 text-3xl font-bold text-gray-900">ATELIER</h3>
-
-              <div>
-                <h4 className="mb-6 font-serif text-lg text-gray-900">
-                  Sign up for our newsletter
-                </h4>
-
-                <form onSubmit={handleSubscribe}>
-                  <div className="flex items-center pb-4 border-b border-gray-600">
-                    <input
-                      type="email"
-                      placeholder="Email Address"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="flex-1 text-gray-900 placeholder-gray-700 bg-transparent focus:outline-none"
-                    />
-                    <button
-                      type="submit"
-                      className="bg-transparent border-none p-0 text-gray-900 transition-colors hover:text-gray-700"
-                    >
-                      <ArrowRight size={20} />
-                    </button>
-                  </div>
-                </form>
-              </div>
+      <div className="py-8 sm:py-12 bg-gray-300">
+        <div className="container px-4 sm:px-6 mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8 md:gap-12 mb-8 sm:mb-12">
+            {/* Left Column - Logo */}
+            <div className="col-span-2 sm:col-span-1">
+              <h3 className="text-2xl sm:text-3xl font-black text-gray-700">ATELIER</h3>
             </div>
 
-            {/* Middle Column - Links */}
-            <div className="mx-auto">
-              <div className="space-y-4">
-                <div className="text-lg font-medium text-gray-900">
-                  Shop
-                </div>
-                <div className="text-gray-700 underline">
-                  Search
-                </div>
+            {/* Middle Column - Shop Links */}
+            <div>
+              <h4 className="mb-4 text-base sm:text-lg font-bold text-gray-900">
+                Categories
+              </h4>
+              <div className="space-y-2 sm:space-y-3">
+                <Link
+                  to="/category/men"
+                  className="block text-sm sm:text-base text-gray-700 transition-colors hover:text-gray-900"
+                >
+                  Men
+                </Link>
+                <Link
+                  to="/category/women"
+                  className="block text-sm sm:text-base text-gray-700 transition-colors hover:text-gray-900"
+                >
+                  Women
+                </Link>
+                <Link
+                  to="/category/kids"
+                  className="block text-sm sm:text-base text-gray-700 transition-colors hover:text-gray-900"
+                >
+                  Kids
+                </Link>
+                <Link
+                  to="/category/accessories"
+                  className="block text-sm sm:text-base text-gray-700 transition-colors hover:text-gray-900"
+                >
+                  Accessories
+                </Link>
+                <Link
+                  to="/category/gifts"
+                  className="block text-sm sm:text-base text-gray-700 transition-colors hover:text-gray-900"
+                >
+                  Gifts
+                </Link>
               </div>
             </div>
 
             {/* Right Column - About Links */}
-            <div className="ml-auto mr-0 pr-12">
-              <h4 className="mb-6 font-serif text-lg text-gray-900">
-                About us
+            <div>
+              <h4 className="mb-4 text-base sm:text-lg font-bold text-gray-900">
+                Info
               </h4>
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 <Link
                   to="/about"
-                  className="block text-gray-700 transition-colors hover:text-gray-900"
+                  className="block text-sm sm:text-base text-gray-700 transition-colors hover:text-gray-900"
                 >
-                  -About Us
+                  About Us
                 </Link>
                 <Link
                   to="/contact"
-                  className="block text-gray-700 transition-colors hover:text-gray-900"
+                  className="block text-sm sm:text-base text-gray-700 transition-colors hover:text-gray-900"
                 >
-                  -Contact Us
+                  Contact
                 </Link>
               </div>
             </div>
           </div>
 
           {/* Divider */}
-          <div className="my-8 border-t border-gray-600"></div>
+          <div className="my-6 sm:my-8 border-t border-gray-600"></div>
 
           {/* Bottom Footer */}
-          <div className="flex flex-col items-center justify-between text-sm text-gray-700 md:flex-row">
-            <div>
-              <span>© 2026 Atelier— Powered by </span>
-              <a
-                href="#"
-                className="text-gray-900 underline transition-colors hover:text-blue-600"
-              >
-                Dawn 360
-              </a>
-            </div>
-            <Link
-              to="/terms"
-              className="mt-4 text-gray-900 transition-colors hover:text-blue-600 md:mt-0"
-            >
-              Terms and Policies
-            </Link>
+          <div className="text-center text-xs sm:text-sm text-gray-700 -mb-3">
+            <span>Made with ❤ by the Atelier team</span>
           </div>
         </div>
       </div>

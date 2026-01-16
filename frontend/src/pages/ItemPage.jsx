@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ShoppingCart, Truck, RotateCcw } from 'lucide-react';
 import { useCartStore } from '../store/cartStore';
-
-// Import logo
-import logoBlack from '../../images/logo-black.png';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../components/ui/dropdown-menu';
 
 const ItemPage = () => {
   const { id } = useParams();
@@ -13,12 +16,8 @@ const ItemPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [addedToCart, setAddedToCart] = useState(false);
-
-  const [selectedColor, setSelectedColor] = useState('');
-  const [selectedSize, setSelectedSize] = useState('M');
   const [quantity, setQuantity] = useState(1);
 
-  const sizes = ['XS', 'S', 'M', 'L'];
   const addToCart = useCartStore((state) => state.addToCart);
 
   useEffect(() => {
@@ -35,7 +34,6 @@ const ItemPage = () => {
       }
       const data = await response.json();
       setProduct(data);
-      setSelectedColor(data.color || '');
     } catch (err) {
       setError(err.message);
       console.error('Error fetching product:', err);
@@ -49,7 +47,6 @@ const ItemPage = () => {
       const response = await fetch('http://localhost:8080/api/products');
       if (response.ok) {
         const data = await response.json();
-        // Get 4 random products excluding current one
         const filtered = data.filter(p => p.id !== parseInt(id));
         const shuffled = filtered.sort(() => 0.5 - Math.random());
         setRelatedItems(shuffled.slice(0, 4));
@@ -65,13 +62,39 @@ const ItemPage = () => {
         id: product.id,
         quantity: quantity,
       });
-
       setAddedToCart(true);
       setTimeout(() => setAddedToCart(false), 2000);
     } catch (err) {
       console.error('Error adding to cart:', err);
       alert('Failed to add item to cart. Please try again.');
     }
+  };
+
+  const getStockStatus = () => {
+    if (product.stockQuantity === 0) {
+      return { label: 'Out of Stock', color: 'bg-red-100 text-red-700', available: false };
+    } else if (product.stockQuantity <= 10) {
+      return { label: 'Low Stock', color: 'bg-yellow-100 text-yellow-700', available: true };
+    }
+    return { label: 'In Stock', color: 'bg-green-100 text-green-700', available: true };
+  };
+
+  const getColorStyle = (colorName) => {
+    const colorMap = {
+      'White': 'bg-white border border-gray-300',
+      'Black': 'bg-black',
+      'Blue': 'bg-blue-500',
+      'Red': 'bg-red-500',
+      'Pink': 'bg-pink-500',
+      'Beige': 'bg-yellow-100 border border-gray-300',
+      'Light Blue': 'bg-blue-200 border border-gray-300',
+      'Off White': 'bg-gray-100 border border-gray-300',
+      'Brown': 'bg-amber-700',
+      'Dark Blue': 'bg-blue-900',
+      'Gold/Black': 'bg-gradient-to-r from-yellow-500 to-black',
+      'Multi': 'bg-gradient-to-r from-red-500 via-purple-500 to-blue-500',
+    };
+    return colorMap[colorName] || 'bg-gray-300';
   };
 
   if (loading) {
@@ -90,22 +113,16 @@ const ItemPage = () => {
     );
   }
 
+  const stockStatus = getStockStatus();
+
   return (
     <div className="min-h-screen bg-white">
-      {/* Header with Logo */}
-      <div className="p-6 lg:p-8">
-        <Link to="/" className="flex flex-col items-center w-fit">
-          <img src={logoBlack} alt="Atelier" className="w-32 h-32 object-contain" />
-          <span className="text-base tracking-[0.35em] text-gray-500 font-normal -mt-10">ATELIER</span>
-        </Link>
-      </div>
-
-      {/* Product Section */}
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 pb-16">
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
-          {/* Left - Main Image */}
-          <div className="flex-shrink-0">
-            <div className="w-64 h-96 md:w-72 md:h-[450px] lg:w-80 lg:h-[500px] bg-gray-100 rounded overflow-hidden">
+      {/* Main Product Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16">
+          {/* Left - Product Image */}
+          <div className="flex items-start justify-center">
+            <div className="w-full aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden shadow-sm">
               <img
                 src={product.imageUrl}
                 alt={product.name}
@@ -115,90 +132,152 @@ const ItemPage = () => {
           </div>
 
           {/* Right - Product Details */}
-          <div className="flex-1 lg:pt-0">
+          <div className="flex flex-col justify-start">
+            {/* Category Badge */}
+            <span className="inline-flex w-fit mb-4 px-3 py-1 bg-gray-200 text-gray-700 text-xs font-medium rounded-full font-serif italic">
+              {product.categoryName}
+            </span>
+
             {/* Product Name */}
-            <h1 className="text-3xl lg:text-4xl font-serif text-gray-900 mb-6 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight font-serif italic">
               {product.name}
             </h1>
 
             {/* Price */}
-            <p className="text-3xl lg:text-4xl text-gray-900 mb-8 font-light">
-              $ {product.price.toFixed(2)}
+            <p className="text-3xl md:text-4xl font-semibold text-gray-900 mb-6 font-serif">
+              ${typeof product.price === 'object' ? (product.price / 1).toFixed(2) : parseFloat(product.price).toFixed(2)}
             </p>
 
-            {/* Color Display */}
+            {/* Stock Status */}
+            <div className="mb-6">
+              <span className={`inline-flex px-3 py-1 text-sm font-medium rounded-full font-serif ${stockStatus.color}`}>
+                {stockStatus.label} ({product.stockQuantity} available)
+              </span>
+            </div>
+
+            {/* SKU and Gender */}
+            <div className="grid grid-cols-2 gap-4 mb-6 pb-6 border-b border-gray-200 font-serif">
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">SKU</p>
+                <p className="text-sm font-medium text-gray-900">{product.sku}</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Category</p>
+                <p className="text-sm font-medium text-gray-900">{product.gender || 'Unisex'}</p>
+              </div>
+            </div>
+
+            {/* Size and Color */}
+            <div className="grid grid-cols-2 gap-6 mb-6 pb-6 border-b border-gray-200 font-serif">
+              {/* Size */}
+              <div>
+                <label className="text-xs text-gray-500 uppercase tracking-wider block mb-2 font-semibold">Size</label>
+                <div className="px-4 py-3 bg-gray-100 rounded-lg">
+                  <p className="text-sm font-medium text-gray-900">{product.size || 'One Size'}</p>
+                </div>
+              </div>
+
+              {/* Color */}
+              <div>
+                <label className="text-xs text-gray-500 uppercase tracking-wider block mb-2 font-semibold">Color</label>
+                <div className="flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded-full border-2 border-gray-300 ${getColorStyle(product.color)}`}></div>
+                  <p className="text-sm font-medium text-gray-900">{product.color}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Description */}
             <div className="mb-8">
-              <p className="text-sm text-gray-700">
-                Color: <span className="font-normal">{selectedColor}</span>
+              <p className="text-gray-600 leading-relaxed text-sm md:text-base font-serif">
+                {product.description}
               </p>
             </div>
 
-            {/* Size Selector */}
+            {/* Quantity Selector */}
             <div className="mb-8">
-              <label className="text-sm font-medium text-gray-900 mb-4 block">Size</label>
-              <div className="flex gap-4">
-                {sizes.map((size) => (
+              <label className="text-xs text-gray-500 uppercase tracking-wider block mb-3 font-semibold font-serif">Quantity</label>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
                   <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`w-14 h-11 rounded-full border-2 text-sm font-medium transition-all ${
-                      selectedSize === size
-                        ? 'border-gray-900 text-gray-900 bg-white'
-                        : 'border-gray-300 text-gray-700 hover:border-gray-500 bg-white'
-                    }`}
+                    disabled={!stockStatus.available}
+                    className="w-full h-12 px-4 border border-gray-300 rounded-lg bg-white text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-gray-900 flex items-center justify-between disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-400 transition-colors"
                   >
-                    {size}
+                    {quantity}
+                    <ChevronDown className="w-4 h-4 ml-2 text-gray-500" />
                   </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Quantity */}
-            <div className="mb-10">
-              <label className="text-sm font-medium text-gray-900 mb-3 block">Qty</label>
-              <div className="relative w-24">
-                <select
-                  value={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="w-full h-11 px-4 border border-gray-300 rounded appearance-none bg-white text-gray-700 focus:outline-none focus:border-gray-900"
-                >
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-28">
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                    <option key={num} value={num}>{num}</option>
+                    <DropdownMenuItem
+                      key={num}
+                      onClick={() => setQuantity(num)}
+                      className={quantity === num ? 'bg-gray-100' : ''}
+                    >
+                      {num}
+                    </DropdownMenuItem>
                   ))}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
-              </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             {/* Add to Cart Button */}
             <button
               onClick={handleAddToCart}
-              className="w-full max-w-md py-4 bg-[#722F37] text-white rounded-full text-lg font-medium hover:bg-[#5a252c] transition-colors"
+              disabled={!stockStatus.available}
+              className={`w-full py-4 rounded-lg text-white text-lg font-semibold flex items-center justify-center gap-2 transition-colors mb-6 ${
+                !stockStatus.available
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : addedToCart
+                  ? 'bg-green-600 hover:bg-green-700'
+                  : 'bg-red-700 hover:bg-red-900 hover:border-transparent'
+              }`}
             >
-              {addedToCart ? '✓ Added to Cart!' : 'Add To Cart'}
+              <ShoppingCart className="w-5 h-5" />
+              {addedToCart ? '✓ Added to Cart' : 'Add To Cart'}
             </button>
+
+            {/* Shipping & Returns Info */}
+            <div className="space-y-4 pt-6 border-t border-gray-200">
+              <div className="flex items-start gap-3">
+                <Truck className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
+                <div className="font-serif">
+                  <p className="text-sm font-medium text-gray-900">Free Shipping</p>
+                  <p className="text-xs text-gray-500">on orders over $50</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 font-serif">
+                <RotateCcw className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" strokeWidth={2 } />
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Easy Returns</p>
+                  <p className="text-xs text-gray-500">30-day return policy</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Related Items Section */}
         {relatedItems.length > 0 && (
-          <div className="mt-20">
-            <h2 className="text-2xl lg:text-3xl font-serif text-center text-gray-900 mb-10">
+          <div className="mb-10 sm:mb-0 mt-16 md:mt-20 pt-12 md:pt-16 border-t border-gray-200">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 md:mb-12 font-black font-serif italic">
               Related Items
             </h2>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 font-serif italic">
               {relatedItems.map((item) => (
-                <Link to={`/item/${item.id}`} key={item.id} className="cursor-pointer group">
-                  <div className="aspect-[3/4] bg-gray-100 rounded overflow-hidden mb-3">
+                <Link to={`/item/${item.id}`} key={item.id} className="group">
+                  <div className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-md transition-shadow">
                     <img
                       src={item.imageUrl}
                       alt={item.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <h3 className="text-sm text-gray-900 mb-1">{item.name}</h3>
-                  <p className="text-sm text-gray-900">$ {item.price.toFixed(2)}</p>
+                  <h3 className="text-sm font-bold text-gray-900 mb-2 line-clamp-2">{item.name}</h3>
+                  <p className="text-sm text-gray-900">
+                    ${typeof item.price === 'object' ? (item.price / 1).toFixed(2) : parseFloat(item.price).toFixed(2)}
+                  </p>
                 </Link>
               ))}
             </div>

@@ -37,6 +37,9 @@ public class CartMapper {
                 .quantity(item.getQuantity())
                 .unitPrice(item.getUnitPrice())
                 .totalPrice(item.getTotalPrice())
+                .imageUrl(item.getProduct().getImageUrl())
+                .size(item.getProduct().getSize())
+                .color(item.getProduct().getColor())
                 .build();
     }
 }

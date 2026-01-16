@@ -25,9 +25,9 @@ export const useCartStore = create((set, get) => ({
         id: item.productId,
         name: item.productName,
         price: Number.parseFloat(item.unitPrice),
-        image: null, // Not provided by backend
-        size: null, // Not stored in backend
-        color: null, // Not stored in backend
+        image: item.imageUrl,
+        size: item.size,
+        color: item.color,
         quantity: item.quantity,
         selected: true, // Default to selected
       }));
@@ -51,9 +51,9 @@ export const useCartStore = create((set, get) => ({
         id: cartItem.productId,
         name: cartItem.productName,
         price: Number.parseFloat(cartItem.unitPrice),
-        image: null,
-        size: null,
-        color: null,
+        image: cartItem.imageUrl,
+        size: cartItem.size,
+        color: cartItem.color,
         quantity: cartItem.quantity,
         selected: true,
       }));
@@ -77,9 +77,9 @@ export const useCartStore = create((set, get) => ({
         id: item.productId,
         name: item.productName,
         price: Number.parseFloat(item.unitPrice),
-        image: null,
-        size: null,
-        color: null,
+        image: item.imageUrl,
+        size: item.size,
+        color: item.color,
         quantity: item.quantity,
         selected: true,
       }));
@@ -103,9 +103,9 @@ export const useCartStore = create((set, get) => ({
         id: item.productId,
         name: item.productName,
         price: Number.parseFloat(item.unitPrice),
-        image: null,
-        size: null,
-        color: null,
+        image: item.imageUrl,
+        size: item.size,
+        color: item.color,
         quantity: item.quantity,
         selected: true,
       }));
