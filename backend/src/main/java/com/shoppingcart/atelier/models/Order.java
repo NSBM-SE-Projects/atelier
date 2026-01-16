@@ -30,6 +30,7 @@ public class Order {
     private String customerName;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<OrderItem> items = new ArrayList<>();
 
     @Column(name = "total_price", nullable = false, precision = 10, scale = 2)
