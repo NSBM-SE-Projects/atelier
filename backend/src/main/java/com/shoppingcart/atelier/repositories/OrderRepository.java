@@ -47,4 +47,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     // Get all orders sorted by creation date descending
     List<Order> findAllByOrderByCreatedAtDesc();
+
+    // Get all orders with customer data (JOIN FETCH to avoid lazy loading issues)
+    @Query("SELECT o FROM Order o JOIN FETCH o.customer ORDER BY o.createdAt DESC")
+    List<Order> findAllWithCustomer();
+
+    // Get order by ID with customer data
+    @Query("SELECT o FROM Order o JOIN FETCH o.customer WHERE o.id = :id")
+    Order findByIdWithCustomer(@Param("id") Long id);
 }

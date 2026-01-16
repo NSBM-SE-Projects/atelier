@@ -17,21 +17,25 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     public List<OrderDTO> getAllOrders() {
-        return orderRepository.findAllByOrderByCreatedAtDesc()
+        return orderRepository.findAllWithCustomer()
                 .stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
     public OrderDTO getOrderById(Long id) {
-        Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+        Order order = orderRepository.findByIdWithCustomer(id);
+        if (order == null) {
+            throw new RuntimeException("Order not found");
+        }
         return mapToDTO(order);
     }
 
     public OrderDTO updateOrderStatus(Long id, String status) {
-        Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+        Order order = orderRepository.findByIdWithCustomer(id);
+        if (order == null) {
+            throw new RuntimeException("Order not found");
+        }
         order.setStatus(status);
 
         // Set completed date if status is COMPLETED or DELIVERED
@@ -44,8 +48,10 @@ public class OrderService {
     }
 
     public OrderDTO updateAdminNotes(Long id, String notes) {
-        Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+        Order order = orderRepository.findByIdWithCustomer(id);
+        if (order == null) {
+            throw new RuntimeException("Order not found");
+        }
         order.setAdminNotes(notes);
         orderRepository.save(order);
         return mapToDTO(order);
