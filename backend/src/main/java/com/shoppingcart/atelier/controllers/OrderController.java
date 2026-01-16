@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -21,12 +23,20 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody CreateOrderRequest request) {
+    public ResponseEntity<?> createOrder(@RequestBody CreateOrderRequest request) {
         try {
             Order order = orderService.createOrderFromCart(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(OrderMapper.toDTO(order));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", e.getMessage() != null ? e.getMessage() : "Failed to create order");
+            errorResponse.put("error", "ORDER_CREATION_FAILED");
+            return ResponseEntity.badRequest().body(errorResponse);
+        } catch (Exception e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "An unexpected error occurred while creating the order");
+            errorResponse.put("error", "INTERNAL_SERVER_ERROR");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
@@ -44,9 +54,9 @@ public class OrderController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/customer/{email}")
-    public ResponseEntity<List<OrderDTO>> getOrdersByCustomer(@PathVariable String email) {
-        List<Order> orders = orderService.getOrdersByCustomerEmail(email);
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<OrderDTO>> getOrdersByCustomer(@PathVariable Long customerId) {
+        List<Order> orders = orderService.getOrdersByCustomerId(customerId);
         List<OrderDTO> dtos = orders.stream()
                 .map(OrderMapper::toDTO)
                 .toList();

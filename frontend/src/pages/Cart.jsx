@@ -239,12 +239,22 @@ const Cart = () => {
               </p>
 
               {/* Checkout Button */}
-              <Button
-                disabled={selectedCount === 0}
-                className="w-full bg-[#8B4555] hover:bg-[#6B3545] disabled:opacity-50 hover:border-transparent disabled:cursor-not-allowed text-white text-base py-6 rounded-full font-semibold transition-colors"
-              >
-                Checkout ({selectedCount} {selectedCount === 1 ? 'item' : 'items'})
-              </Button>
+              {selectedCount > 0 ? (
+                <Link to="/checkout" className="w-full">
+                  <Button
+                    className="w-full bg-[#8B4555] hover:bg-[#6B3545] hover:border-transparent text-white text-base py-6 rounded-full font-semibold transition-colors"
+                  >
+                    Checkout ({selectedCount} {selectedCount === 1 ? 'item' : 'items'})
+                  </Button>
+                </Link>
+              ) : (
+                <Button
+                  disabled
+                  className="w-full bg-[#8B4555] hover:bg-[#6B3545] disabled:opacity-50 hover:border-transparent disabled:cursor-not-allowed text-white text-base py-6 rounded-full font-semibold transition-colors"
+                >
+                  Checkout ({selectedCount} {selectedCount === 1 ? 'item' : 'items'})
+                </Button>
+              )}
 
               {/* Continue Shopping */}
               <Link to="/shop" className="w-full">

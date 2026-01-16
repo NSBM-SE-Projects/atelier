@@ -31,8 +31,14 @@ public class OrderService {
 
         Order order = Order.builder()
                 .orderNumber(orderNumber)
-                .customerEmail(request.getCustomerEmail())
-                .customerName(request.getCustomerName())
+                .customerId(request.getCustomerId())
+                .shippingAddress(request.getShippingAddress())
+                .shippingCity(request.getShippingCity())
+                .shippingPostalCode(request.getShippingPostalCode())
+                .shippingCountry(request.getShippingCountry())
+                .paymentMethod(request.getPaymentMethod())
+                .customerNotes(request.getCustomerNotes())
+                .subtotal(cart.getTotalPrice())
                 .totalPrice(cart.getTotalPrice())
                 .status("PENDING")
                 .build();
@@ -64,8 +70,8 @@ public class OrderService {
         return orderRepository.findByOrderNumber(orderNumber);
     }
 
-    public List<Order> getOrdersByCustomerEmail(String email) {
-        return orderRepository.findByCustomerEmail(email);
+    public List<Order> getOrdersByCustomerId(Long customerId) {
+        return orderRepository.findByCustomerId(customerId);
     }
 
     public List<Order> getOrdersByStatus(String status) {
