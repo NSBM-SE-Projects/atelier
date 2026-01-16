@@ -69,9 +69,9 @@ const Home = () => {
 
       {/* Hero Section */}
       <section className="relative w-full min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gradient-to-b from-red-600 via-red-800 to-red-950">
-        <div className="container text-center px-11">
+        <div className="container text-center">
           {/* Logo */}
-          <div className="flex justify-center mb-3 sm:mb-3">
+          <div className="flex justify-center mb-3 sm:mb-3 -mt-48">
             <img
               src={atelierLogo}
               alt="Atelier"
