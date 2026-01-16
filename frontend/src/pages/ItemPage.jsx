@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronDown, ShoppingCart, Truck, RotateCcw } from 'lucide-react';
 import { useCartStore } from '../store/cartStore';
+import api from '@/lib/api';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,12 +29,8 @@ const ItemPage = () => {
   const fetchProduct = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8080/api/products/${id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch product');
-      }
-      const data = await response.json();
-      setProduct(data);
+      const response = await api.get(`/products/${id}`);
+      setProduct(response.data);
     } catch (err) {
       setError(err.message);
       console.error('Error fetching product:', err);
@@ -44,13 +41,10 @@ const ItemPage = () => {
 
   const fetchRelatedItems = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/products');
-      if (response.ok) {
-        const data = await response.json();
-        const filtered = data.filter(p => p.id !== parseInt(id));
-        const shuffled = filtered.sort(() => 0.5 - Math.random());
-        setRelatedItems(shuffled.slice(0, 4));
-      }
+      const response = await api.get('/products');
+      const filtered = response.data.filter(p => p.id !== parseInt(id));
+      const shuffled = filtered.sort(() => 0.5 - Math.random());
+      setRelatedItems(shuffled.slice(0, 4));
     } catch (err) {
       console.error('Error fetching related items:', err);
     }
