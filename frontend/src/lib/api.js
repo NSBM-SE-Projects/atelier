@@ -28,14 +28,23 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Handle 401 Unauthorized
+    // Handle 401 Unauthorized - but NOT for auth endpoints
+    // Auth endpoints should handle their own 401 errors to show error messages
     if (error.response?.status === 401) {
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+      const requestUrl = error.config?.url || '';
+      const isAuthEndpoint = requestUrl.includes('/auth/login') || requestUrl.includes('/auth/register');
+
+      // Only redirect if it's not an auth endpoint (i.e., accessing protected resource)
+      if (!isAuthEndpoint) {
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+      }
     }
 
-    // Log errors for debugging
-    console.error('API ERROR:', error.response?.status, error.message);
+    // Log errors for debugging (only in development)
+    if (import.meta.env.DEV) {
+      console.error('API ERROR:', error.response?.status, error.message);
+    }
 
     return Promise.reject(error);
   }
