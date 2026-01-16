@@ -39,31 +39,31 @@ const Footer = () => {
               </h4>
               <div className="space-y-2 sm:space-y-3">
                 <Link
-                  to="/category/men"
+                  to="/men"
                   className="block text-sm sm:text-base text-gray-700 transition-colors hover:text-gray-900"
                 >
                   Men
                 </Link>
                 <Link
-                  to="/category/women"
+                  to="/women"
                   className="block text-sm sm:text-base text-gray-700 transition-colors hover:text-gray-900"
                 >
                   Women
                 </Link>
                 <Link
-                  to="/category/kids"
+                  to="/kids"
                   className="block text-sm sm:text-base text-gray-700 transition-colors hover:text-gray-900"
                 >
                   Kids
                 </Link>
                 <Link
-                  to="/category/accessories"
+                  to="/accessories"
                   className="block text-sm sm:text-base text-gray-700 transition-colors hover:text-gray-900"
                 >
                   Accessories
                 </Link>
                 <Link
-                  to="/category/gifts"
+                  to="/gifts"
                   className="block text-sm sm:text-base text-gray-700 transition-colors hover:text-gray-900"
                 >
                   Gifts

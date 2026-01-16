@@ -78,7 +78,7 @@ const Contact = () => {
     <div className="w-full bg-gray-100 py-6 sm:py-12 md:py-16">
       <div className="container mx-auto px-4 sm:px-6">
                   {/* Success Message */}
-        {!submitted && (
+        {submitted && (
           <div className=" mb-2 sm:mb-10 mt-2 sm:-mt-7 p-4 sm:p-6 bg-green-200 border border-green-500 rounded-lg flex items-start gap-3 sm:gap-4">
             <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 flex-shrink-0 mt-0.5" strokeWidth={3} />
             <div>
